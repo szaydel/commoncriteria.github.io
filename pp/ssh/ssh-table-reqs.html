@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cc="https://niap-ccevs.org/cc/v1" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xhtml="http://www.w3.org/1999/xhtml"><style type="text/css">
+    .assignable-content{
+      font-style: italic;
+    }
+    .refinement{
+      text-decoration: underline;
+    }
+
+    .activity_pane .toggler::after, .activity_pane .toggler{ 
+       display: inline-block;
+       height: auto;
+       content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8A\
+       AAAPCAYAAAA71pVKAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAQOFAAEDhQGl\
+       VDz+AAAAB3RJTUUH4gIXFDM7fhmr1wAAAfRJREFUKM+dkk9I02EYxz/P+25uurWR\
+       tTkzI4NGl4jQgkq71K1DhnTQIDolRAQFQYSHTtGhU4e6eujQofBSFLOg0C4RUSjh\
+       FnmqTTdKpj/mfv/eX4cUpmRYn9vz8v3w8D7PA/AWGADCbI4QcAb4AnAF8IBJEdX+\
+       N0tEda40C4AHADviW1LFvpOX6+FwtAacVzqkGiWtwxo4F21OuPu7+yvxRNoDEhpY\
+       cpzavkQyc7D76FCk+vN7j7VU6RdR4xAsikjGGP9FKrN3sPfEpajv2i2zhckR4JUG\
+       UCr0erFavLkn2ytd2WPxcFOsZb74+SIQA0YPHBqIdB8Z6tChJv1m/N4P33OGAUsD\
+       BIFxPNcOkq07jyeSbbo1tTu2q6vHEqU7D/ddSKcz2ZQJjBSmx925b9NjwEMAafha\
+       eyQa/3Dq7O0243sCIEoRGAOA59nm5dM7OHVruzH+AkDjYEp23RrLT+U8Ub+fV0UR\
+       oVyaMfVa9fqquF5GKX3ja2FCuc6yWbMipYNP755UgEdr8o2FMf5ivVYdKRfzRkRW\
+       RfJTOc+2rWdAcUN5hdGP7x8viGgAXLvGbGFCKxW6tj74J3nOqVvP89M5V6kQ86UZ\
+       f7lWvWWMt7Sp41VKb21uSfqnB++6kWi8BLTzL4ioq7H4tgC4z3/QAZSBxEaBXygN\
+       v+jeFnAPAAAAAElFTkSuQmCC');
+       max-width: 15px;
+    }
+
+
+    a {
+      text-decoration: none;
+      word-wrap: break-word;
+    }
+    a.abbr:link{
+      color:black;
+      text-decoration:none;
+    }
+    a.abbr:visited{
+      color:black;
+      text-decoration:none;
+    }
+    a.abbr:hover{
+      color:blue;
+      text-decoration:none;
+    }
+    a.abbr:hover:visited{
+      color:purple;
+      text-decoration:none;
+    }
+    a.abbr:active{
+      color:red;
+      text-decoration:none;
+    }
+    .note-header{
+      font-weight: bold;
+    }
+    .note p:first-child{
+      display: inline;
+    }
+
+
+    /* Tooltip container */
+    .tooltipped {
+       position: relative;
+       display: inline-block;
+       border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+    }
+
+    /* Tooltip text */
+    .tooltiptext {
+       visibility: hidden;
+       width: 120px;
+       background-color: black;
+       color: #fff;
+       text-align: center;
+       padding: 5px 0;
+       border-radius: 6px;
+    
+       /* Position the tooltip text - see examples below! */
+       position: absolute;
+       z-index: 1;
+   }
+
+   /* Show the tooltip text when you mouse over the tooltip container */
+   .tooltipped:hover .tooltiptext {
+       visibility: visible;
+   }
+
+   table.mfs td{
+       text-align: center;
+   }
+   table.mfs td:first-child{
+       text-align: left;
+   }
+   
+		html {
+			font-family: verdana, arial, helvetica, sans-serif;
+		}
+		h1 {
+			text-align: center;
+			font-size: x-large;
+			margin-top: 2em; margin-bottom: 2em;
+    }
+		h2 {
+			font-size: large;
+      border-bottom: solid 1px gray;
+      margin-top: 2em; margin-bottom: 1em;
+		}
+    table.revisionhistory {
+			margin: auto; margin-top: 1em; border-collapse:collapse;
+				font-size:14px;
+		}
+		th.revisionhistory  {
+        border-bottom: 3px solid #dcdcdc;
+        border-left: none;
+        border-right: none;
+        vertical-align: bottom;
+				text-align: left;
+        padding: 2px;
+				padding-right: 20px;
+    }
+		td.revisionhistory  {
+        border: 2px solid #dcdcdc;
+        border-left: none;
+        border-right: none;
+        vertical-align: top;
+				text-align: left;
+        padding: 2px;
+				padding-right: 20px;
+    }
+
+		div.componenttitle
+		{
+			text-align: left; font-size: large; font-weight:bold;
+			margin-top: 1em;
+			margin-left: 2.5em;
+			margin-right: 3em;
+			border: solid 2px gray;
+      background-color: #dedede;
+			padding: 0.25em;
+		}
+		table.elementstyle
+		{
+				text-align: left;
+				font-size:14px;
+				margin-left: 3.5em;
+				margin-right: 6em;
+				margin-bottom: 2em;
+		}
+		tr.elementstyle {
+			vertical-align: top;
+
+		}
+		td.elementidstyle
+		{
+			font-weight: bold;
+			padding-right: 1em;
+			padding-top: 1em;
+		}
+		td.elementstyle {
+			padding-top: 1em;
+		}
+
+    pre {
+        white-space: pre-wrap;
+        white-space: -moz-pre-wrap !important;
+        word-wrap:break-word;
+    }
+		div.title
+		{
+			text-align: center; font-size: xx-large; font-weight:bold;
+            font-family: verdana,arial,sans-serif;
+			
+			margin-left: 8%; margin-right: 8%;
+		}
+		div.center	{ display: block; margin-left: auto; margin-right: auto; text-align:center; }
+		div.intro
+		{
+			text-align: left; font-size: normal;
+			margin-left: 12%; margin-right: 12%;
+			padding-top: 1em;
+		}
+
+		div.sectiontitle
+		{
+			text-align: left; font-size: x-large; font-weight:bold;
+			margin-top: 3em;
+			border-top: solid 2px gray;
+			border-bottom: solid 2px gray;
+			padding-bottom: 0.25em; padding-top: 0.25em;
+		}
+	    div.appnote    { margin-left: 0%; margin-top: 1em; }
+
+
+    	</style><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Requirements from the <i>Functional Package for Secure Shell (SSH)</i></title></head><body><h1> Requirements from the <br></br><i>Functional Package for Secure Shell (SSH)</i></h1><div class="center"><img src="images/niaplogo.png"></img><p></p>Version: 1.0<p></p>2019-08-21<p></p><b>National Information Assurance Partnership</b></div><h2>Revision History</h2><div class="center"><table class="revisionhistory"><tr><th class="revisionhistory">Version</th><th class="revisionhistory">Date</th><th class="revisionhistory">Comment</th></tr></table></div><h2>Introduction</h2><div class="intro"><b>Purpose.</b> This document presents the functional
+							and assurance requirements found in the <i>Functional Package for Secure Shell (SSH)</i>.
+							Common Criteria evaluation, facilitated in the U.S. by the National
+							Information Assurance Partnership (NIAP), is required for IA and
+							IA-enabled products in National Security Systems according to CNSS
+							Policy #11. <p></p><b>Using this document.</b> This representation of the Protection Profile
+					includes: <p></p><ul><li><a href="#SFRs"><i>Security Functional Requirements</i></a> for use in
+							evaluation. These are featured without the formal Assurance Activities
+							specified in the Protection Profile, to assist the reader who is
+							interested only in the requirements. <p></p> It also includes, in tables
+							shown later, particular types of security functional requirements that
+							are not strictly required in all cases. These are:</li><p></p><ul><li><a href="#selbasedSFRs"><i>Selection-based Security Functional
+										Requirements</i></a> which become required when certain
+								selections are made inside the regular Security Functionality
+								Requirements (as indicated by the <b>[selection:]</b>
+								construct).</li><li><a href="#objSFRs"><i>Objective Security Functional
+									Requirements</i></a> which are highly desired but not yet
+								widely-available in commercial technology.</li><li><a href="#optSFRs"><i>Optional Security Functional
+									Requirements</i></a> which are available for evaluation and
+								which some customers may insist upon.</li></ul><p></p><li><a href="#SARs"><i>Security Assurance Requirements</i></a> which relate
+							to developer support for the product under evaluation, development
+							processes, and other non-functionality security relevant
+							requirements.</li></ul><p></p><p></p></div><br></br><div class="sectiontitle" id="SFRs"> Security Functional Requirements </div><div xmlns="" id="FCS_COP.1/SSH" class="componenttitle"><a class="abbr" href="#FCS_COP.1/SSH">Cryptographic Operation (AES-CTR Encryption/Decryption for SSH)</a></div>
+<table xmlns="" class="elementstyle"><tr class="elementstyle">
+<td id="FCS_COP.1.1/SSH" class="elementidstyle"><a class="abbr" href="#FCS_COP.1.1/SSH">FCS_COP.1.1/SSH</a></td>
+<td class="elementstyle">The <b>SSH software shall [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>perform</i>, <i>invoke-platform-provided</i>]</b> [<i>encryption/decryption services for data</i>] in accordance
+          with a specified cryptographic algorithm [<i>AES-CTR (as defined in NIST SP 800-38A)
+            mode</i>] and cryptographic key sizes [<i>128-bit, 256-bit</i>].
+        <br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">This Package may be used for a TOE that conforms to a PP that permits the TOE's use of platform cryptography (such as the Protection Profile for Application Software). In this case, the TOE may rely on its platform 
+          to provide the cryptographic functionality used to support the TOE's SSH function. If the SSH software does provide its own cryptography, the ST should indicate which cryptographic SFRs from its claimed PP are used to implement SSH functionality.
+        </span>
+</div>
+</td>
+</tr></table>
+<div xmlns="" id="FCS_SSH_EXT.1" class="componenttitle"><a class="abbr" href="#FCS_SSH_EXT.1">SSH Protocol</a></div>
+<table xmlns="" class="elementstyle"><tr class="elementstyle">
+<td id="FCS_SSH_EXT.1.1" class="elementidstyle"><a class="abbr" href="#FCS_SSH_EXT.1.1">FCS_SSH_EXT.1.1</a></td>
+<td class="elementstyle">The SSH software shall implement the SSH protocol that complies with RFCs 4251, 4252, 4253,
+        4254 and 
+        [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>5647</i>, <i>5656</i>, <i>6187</i>, <i>6668</i>, <i>8332</i>, <i>no other RFCs</i>] as a 
+		[<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>client</i>, <i>server</i>].
+		<br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">The ST author selects which of the additional RFCs to which
+        conformance is being claimed. An SSH product can implement additional RFCs, but only those
+        listed in the selection can be claimed as conformant under CC. 
+        The RFC selections for this requirement need to be consistent with selections in
+        later elements of this Functional Package (e.g., cryptographic algorithms permitted). 
+        <p></p>
+        RFC 4253 indicates that certain cryptographic algorithms are "REQUIRED." This means that from the 
+        Internet Engineering Task Force's (IETF's) perspective the implementation must include support, not that the algorithms must 
+        be enabled for use. For the purposes of this SFR's evaluation activity and this Functional Package
+        overall, it is not necessary to ensure that algorithms listed as "REQUIRED" by the RFC 
+        but not listed in later elements of this Functional Package are actually implemented.
+        <p></p>
+         RFC 5647 applies when AEAD_AES_128_GCM or AEAD_AES_256_GCM is selected as an encryption algorithm in FCS_SSHC_EXT.1.3 or FCS_SSHS_EXT.1.3 and as a MAC algorithm in FCS_SSHC_EXT.1.5 or FCS_SSHS_EXT.1.5. 
+          <p></p>
+          RFC 5656 applies when ecdsa-sha2-nistp256 or ecdsa-sha2-nistp384 is selected as a public key algorithm in FCS_SSHC_EXT.1.4 or FCS_SSHS_EXT.1.4, or when ecdh-sha2-nistp256, ecdh-sha2-nistp384, or ecdh-sha2-nistp521 is selected as a key exchange 
+          algorithm in FCS_SSHC_EXT.1.6 or FCS_SSHS_EXT.1.6.
+          <p></p>
+          RFC 6187 applies when x509v3-ecdsa-sha2-nistp256 or x509v3-ecdsa-sha2-nistp384 is selected as a public key algorithm in FCS_SSHC_EXT.1.4 or FCS_SSHS_EXT.1.4.
+          <p></p>
+          RFC 6668 applies when hmac-sha2-256 or hmac-sha2-512 is selected as a MAC algorithm in FCS_SSHC_EXT.1.5 or FCS_SSHS_EXT.1.5.
+          <p></p>
+          RFC 8332 applies when rsa-sha2-256 or rsa-sha2-512 is selected as a public key algorithm in FCS_SSHC_EXT.1.4 or FCS_SSHS_EXT.1.4.
+          <p></p>
+        If "client" is selected, then the ST must include the requirements from <a class="linkref" href="#FCS_SSHC_EXT.1">FCS_SSHC_EXT.1</a>.
+        <p></p>
+        If "server" is selected, then the ST must include the requirements from <a class="linkref" href="#FCS_SSHS_EXT.1">FCS_SSHS_EXT.1</a>.
+	</span>
+</div>
+</td>
+</tr></table>
+<div class="sectiontitle" id="SARs"> Security Assurance Requirements </div><table class="elementstyle"></table><div class="sectiontitle" id="selbasedSFRs"> Selection-Based Security Functional
+					Requirements </div><div xmlns="" id="FCS_SSHC_EXT.1" class="componenttitle"><a class="abbr" href="#FCS_SSHC_EXT.1">SSH Protocol - Client</a></div>
+<table xmlns="" class="elementstyle">
+<tr class="elementstyle">
+<td id="FCS_SSHC_EXT.1.1" class="elementidstyle"><a class="abbr" href="#FCS_SSHC_EXT.1.1">FCS_SSHC_EXT.1.1</a></td>
+<td class="elementstyle">The SSH client shall ensure that the SSH protocol implementation supports the following
+        authentication methods as described in RFC 4252: public key-based and
+          [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>password-based</i>, <i>no other method</i>].
+        <br>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="FCS_SSHC_EXT.1.2" class="elementidstyle"><a class="abbr" href="#FCS_SSHC_EXT.1.2">FCS_SSHC_EXT.1.2</a></td>
+<td class="elementstyle">The SSH client shall ensure that, as described in RFC 4253, packets greater than 
+        [<b xmlns:htm="http://www.w3.org/1999/xhtml">assignment</b>: <span xmlns:htm="http://www.w3.org/1999/xhtml" class="assignable-content">number of bytes</span>] bytes in an SSH transport connection are
+        dropped.<br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">RFC 4253 provides for the acceptance of “large packets” with the
+        caveat that the packets should be of “reasonable length” or dropped. The assignment should
+        be filled in by the ST author with the maximum packet size accepted, thus defining
+        “reasonable length” for the TOE.</span>
+</div>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="FCS_SSHC_EXT.1.3" class="elementidstyle"><a class="abbr" href="#FCS_SSHC_EXT.1.3">FCS_SSHC_EXT.1.3</a></td>
+<td class="elementstyle">The SSH client shall ensure that the SSH transport implementation uses the following
+        encryption algorithms and rejects all other encryption algorithms: aes128-ctr, aes256-ctr, 
+        [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>aes128-cbc</i>, <i>aes256-cbc</i>, <i>AEAD_AES_128_GCM</i>, <i>AEAD_AES_256_GCM</i>, <i>no other algorithms</i>].
+        <br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">RFC 5647 specifies the use of the AEAD_AES_128_GCM and
+        AEAD_AES_256_GCM algorithms in SSH. As described in RFC 5647, AEAD_AES_128_GCM and
+        AEAD_AES_256_GCM can only be chosen as encryption algorithms when the same algorithm is
+        being used as the MAC algorithm.
+        If AES-GCM is selected,
+        there should be corresponding FCS_COP entries in the ST.</span>
+</div>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="FCS_SSHC_EXT.1.4" class="elementidstyle"><a class="abbr" href="#FCS_SSHC_EXT.1.4">FCS_SSHC_EXT.1.4</a></td>
+<td class="elementstyle">The SSH client shall ensure that the SSH transport implementation uses 
+        [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>ssh-rsa</i>, <i>rsa-sha2-256</i>, <i>rsa-sha2-512</i>, <i>ecdsa-sha2-nistp256</i>] and 
+        [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>ecdsa-sha2-nistp384</i>, <i>x509v3-ecdsa-sha2-nistp256</i>, <i>x509v3-ecdsa-sha2-nistp384</i>, <i>no other public key algorithms</i>] as its public key algorithm(s) and rejects all other public key
+        algorithms.<br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">Implementations that select only ssh-rsa will not achieve the
+        112-bit security strength in the digital signature generation for SSH authentication as is
+        recommended in NIST SP 800-131A. 
+        
+        
+        Future versions of this document may remove ssh-rsa as a
+        selection. 
+        
+        If "x509v3-ecdsa-sha2-nistp256" or "x509v3-ecdsa-sha2-nistp384" are selected, then
+        the list of trusted certification authorities must be selected in 
+        <a class="linkref" href="#FCS_SSHC_EXT.1.8">FCS_SSHC_EXT.1.8</a>. RFC 8332 specifies the use of rsa-sha2-256 or rsa-sha2-512 in SSH.
+        <p></p>
+        The SFRs for cryptographic key generation and certificate validation are inherited
+        from the PP or PP-Module that includes this Package.
+        </span>
+</div>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="FCS_SSHC_EXT.1.5" class="elementidstyle"><a class="abbr" href="#FCS_SSHC_EXT.1.5">FCS_SSHC_EXT.1.5</a></td>
+<td class="elementstyle">The SSH client shall ensure that the SSH transport implementation uses 
+        [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>hmac-sha1</i>, <i>hmac-sha1-96</i>, <i>hmac-sha2-256</i>, <i>hmac-sha2-512</i>] and 
+        [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>AEAD_AES_128_GCM</i>, <i>AEAD_AES_256_GCM</i>, <i>no other MAC algorithms</i>] as its data integrity MAC algorithm(s) and rejects all other MAC
+        algorithm(s).<br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">RFC 5647 specifies the use of the AEAD_AES_128_GCM and
+        AEAD_AES_256_GCM algorithms in SSH. As described in RFC 5647, AEAD_AES_128_GCM and
+        AEAD_AES_256_GCM can only be chosen as MAC algorithms when the same algorithm is being used
+        as the encryption algorithm. RFC 6668 specifies the use of the sha2 algorithms in
+        SSH.
+        <p></p>
+        The SFRs for cryptographic operations, encryption, and hashing are inherited from  
+        the PP or PP-Module that includes this Package.
+        </span>
+</div>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="FCS_SSHC_EXT.1.6" class="elementidstyle"><a class="abbr" href="#FCS_SSHC_EXT.1.6">FCS_SSHC_EXT.1.6</a></td>
+<td class="elementstyle">The SSH client shall ensure that 
+          [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>diffie-hellman-group14-sha1</i>, <i>ecdh-sha2-nistp256</i>]
+          and
+          [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>ecdh-sha2-nistp384</i>, <i>ecdh-sha2-nistp521</i>, <i>no other methods</i>]
+        are the only allowed key exchange methods used for the SSH protocol.<br>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="FCS_SSHC_EXT.1.7" class="elementidstyle"><a class="abbr" href="#FCS_SSHC_EXT.1.7">FCS_SSHC_EXT.1.7</a></td>
+<td class="elementstyle">The SSH client shall ensure that the SSH connection be rekeyed after 
+          [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>no more than 2<sup>28</sup> packets have been transmitted</i>, <i>no more than 1 gigabyte of data has been transmitted</i>, <i>no more than 1 hour</i>]
+          using that key.<br>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="FCS_SSHC_EXT.1.8" class="elementidstyle"><a class="abbr" href="#FCS_SSHC_EXT.1.8">FCS_SSHC_EXT.1.8</a></td>
+<td class="elementstyle">The SSH client shall ensure that the SSH client authenticates the identity of the SSH server
+            using a local database associating each host name with its corresponding public key or 
+            [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>a list of trusted certification authorities</i>, <i>no other methods</i>] as described in RFC 4251 section 4.1.<br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note"> The selection for "a list of trusted certification authorities" can only be chosen
+            if "x509v3-ecdsa-sha2-nistp256" or "x509v3-ecdsa-sha2-nistp384" are selected in 
+            <a class="linkref" href="#FCS_SSHC_EXT.1.4">FCS_SSHC_EXT.1.4</a>.</span>
+</div>
+</td>
+</tr>
+</table>
+<div xmlns="" id="FCS_SSHS_EXT.1" class="componenttitle"><a class="abbr" href="#FCS_SSHS_EXT.1">SSH Protocol - Server</a></div>
+<table xmlns="" class="elementstyle">
+<tr class="elementstyle">
+<td id="FCS_SSHS_EXT.1.1" class="elementidstyle"><a class="abbr" href="#FCS_SSHS_EXT.1.1">FCS_SSHS_EXT.1.1</a></td>
+<td class="elementstyle">The SSH server shall ensure that the SSH protocol implementation supports the following
+        authentication methods as described in RFC 4252: public key-based and
+          [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>password-based</i>, <i>no other method</i>].
+        <br>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="FCS_SSHS_EXT.1.2" class="elementidstyle"><a class="abbr" href="#FCS_SSHS_EXT.1.2">FCS_SSHS_EXT.1.2</a></td>
+<td class="elementstyle">The SSH server shall ensure that, as described in RFC 4253, packets greater than 
+        [<b xmlns:htm="http://www.w3.org/1999/xhtml">assignment</b>: <span xmlns:htm="http://www.w3.org/1999/xhtml" class="assignable-content">number of bytes</span>] bytes in an SSH transport connection are
+        dropped.<br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">RFC 4253 provides for the acceptance of “large packets” with the
+        caveat that the packets should be of “reasonable length” or dropped. The assignment should
+        be filled in by the ST author with the maximum packet size accepted, thus defining
+        “reasonable length” for the TOE.</span>
+</div>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="FCS_SSHS_EXT.1.3" class="elementidstyle"><a class="abbr" href="#FCS_SSHS_EXT.1.3">FCS_SSHS_EXT.1.3</a></td>
+<td class="elementstyle">The SSH server shall ensure that the SSH transport implementation uses the following
+          encryption algorithms and rejects all other encryption algorithms: aes128-ctr, 
+          aes256-ctr, [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>aes128-cbc</i>, <i>aes256-cbc</i>, <i>AEAD_AES_128_GCM</i>, <i>AEAD_AES_256_GCM</i>, <i>no other algorithms</i>].
+        <br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">
+          RFC 5647 specifies the use of the AEAD_AES_128_GCM and AEAD_AES_256_GCM
+          algorithms in SSH. As described in RFC 5647, AEAD_AES_128_GCM and
+          AEAD_AES_256_GCM can only be chosen as encryption algorithms when the same
+          algorithm is being used as the MAC algorithm.
+        </span>
+</div>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="FCS_SSHS_EXT.1.4" class="elementidstyle"><a class="abbr" href="#FCS_SSHS_EXT.1.4">FCS_SSHS_EXT.1.4</a></td>
+<td class="elementstyle">The SSH server shall ensure that the SSH transport implementation uses 
+          [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>ssh-rsa</i>, <i>rsa-sha2-256</i>, <i>rsa-sha2-512</i>, <i>ecdsa-sha2-nistp256</i>]
+           and 
+          [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>ecdsa-sha2-nistp384</i>, <i>x509v3-ecdsa-sha2-nistp256</i>, <i>x509v3-ecdsa-sha2-nistp384</i>, <i>no other public key algorithms</i>]
+        as its public key algorithm(s) and
+        rejects all other public key algorithms.
+        <br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">
+          Implementations that select only ssh-rsa will not achieve the 112-bit security strength in the
+          digital signature generation for SSH authentication as is recommended in NIST SP 800-131A. 
+          
+          
+          Future versions of this document may remove ssh-rsa as a
+          selection.  
+          
+          RFC 8332 specifies the use of rsa-sha2-256 or rsa-sha2-512 in SSH.
+          <p></p>
+          The SFRs for cryptographic key generation and certificate validation are inherited
+          from the PP or PP-Module that includes this Package.
+        </span>
+</div>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="FCS_SSHS_EXT.1.5" class="elementidstyle"><a class="abbr" href="#FCS_SSHS_EXT.1.5">FCS_SSHS_EXT.1.5</a></td>
+<td class="elementstyle">The SSH server shall ensure that the SSH transport implementation uses 
+        [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>hmac-sha1</i>, <i>hmac-sha1-96</i>, <i>hmac-sha2-256</i>, <i>hmac-sha2-512</i>]
+          and
+        [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>AEAD_AES_128_GCM</i>, <i>AEAD_AES_256_GCM</i>, <i>no other MAC algorithms</i>]
+        as its MAC algorithm(s) and rejects all
+        other MAC algorithm(s).<br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">
+          RFC 5647 specifies the use of the AEAD_AES_128_GCM and AEAD_AES_256_GCM
+          algorithms in SSH. As described in RFC 5647, AEAD_AES_128_GCM and
+          AEAD_AES_256_GCM can only be chosen as MAC algorithms when the same algorithm is
+          being used as the encryption algorithm. RFC 6668 specifies the use of the sha2 algorithms
+          in SSH.
+          <p></p>
+          The SFRs for cryptographic operations, encryption and hashing, are inherited from the PP or PP-Module that includes this Package.
+        </span>
+</div>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="FCS_SSHS_EXT.1.6" class="elementidstyle"><a class="abbr" href="#FCS_SSHS_EXT.1.6">FCS_SSHS_EXT.1.6</a></td>
+<td class="elementstyle">The SSH server shall ensure that 
+        [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>diffie-hellman-group14-sha1</i>, <i>ecdh-sha2-nistp256</i>]
+          and
+        [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>ecdh-sha2-nistp384</i>, <i>ecdh-sha2-nistp521</i>, <i>no other methods</i>]
+        are the only allowed key exchange
+        methods used for the SSH protocol.<br>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="FCS_SSHS_EXT.1.7" class="elementidstyle"><a class="abbr" href="#FCS_SSHS_EXT.1.7">FCS_SSHS_EXT.1.7</a></td>
+<td class="elementstyle">The SSH server shall ensure that the SSH connection be rekeyed after 
+          [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>no more than 2<sup>28</sup> packets have been transmitted</i>, <i>no more than 1 gigabyte of data has been transmitted</i>, <i>no more than 1 hour</i>]
+         using that key.<br>
+</td>
+</tr>
+</table>
+<div class="sectiontitle" id="objSFRs"> Objective Security Functional Requirements </div><div class="sectiontitle" id="optSFRs"> Optional Security Functional Requirements </div></body></html>

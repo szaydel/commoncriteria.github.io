@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cc="https://niap-ccevs.org/cc/v1" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xhtml="http://www.w3.org/1999/xhtml"><style type="text/css">
+    #toc a{
+        display: block;
+    }
+
+    svg{
+      width: 100%;
+    }
+
+    a[id^="ajq_"]{
+        color:black;
+    }
+
+    
+    body{
+       max-width: 900px;
+       margin: auto;
+    }
+    #toc span{
+       margin-left: 20px;
+    }
+    .assignable-content{
+      font-style: italic;
+    }
+    .refinement{
+      text-decoration: underline;
+    }
+    div.eacategory{
+      font-style: italic;
+      font-weight: bold;
+    }
+    .activity_pane .toggler::after, .activity_pane .toggler{
+       display: inline-block;
+       height: auto;
+       content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8A\
+       AAAPCAYAAAA71pVKAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAQOFAAEDhQGl\
+       VDz+AAAAB3RJTUUH4gIXFDM7fhmr1wAAAfRJREFUKM+dkk9I02EYxz/P+25uurWR\
+       tTkzI4NGl4jQgkq71K1DhnTQIDolRAQFQYSHTtGhU4e6eujQofBSFLOg0C4RUSjh\
+       FnmqTTdKpj/mfv/eX4cUpmRYn9vz8v3w8D7PA/AWGADCbI4QcAb4AnAF8IBJEdX+\
+       N0tEda40C4AHADviW1LFvpOX6+FwtAacVzqkGiWtwxo4F21OuPu7+yvxRNoDEhpY\
+       cpzavkQyc7D76FCk+vN7j7VU6RdR4xAsikjGGP9FKrN3sPfEpajv2i2zhckR4JUG\
+       UCr0erFavLkn2ytd2WPxcFOsZb74+SIQA0YPHBqIdB8Z6tChJv1m/N4P33OGAUsD\
+       BIFxPNcOkq07jyeSbbo1tTu2q6vHEqU7D/ddSKcz2ZQJjBSmx925b9NjwEMAafha\
+       eyQa/3Dq7O0243sCIEoRGAOA59nm5dM7OHVruzH+AkDjYEp23RrLT+U8Ub+fV0UR\
+       oVyaMfVa9fqquF5GKX3ja2FCuc6yWbMipYNP755UgEdr8o2FMf5ivVYdKRfzRkRW\
+       RfJTOc+2rWdAcUN5hdGP7x8viGgAXLvGbGFCKxW6tj74J3nOqVvP89M5V6kQ86UZ\
+       f7lWvWWMt7Sp41VKb21uSfqnB++6kWi8BLTzL4ioq7H4tgC4z3/QAZSBxEaBXygN\
+       v+jeFnAPAAAAAElFTkSuQmCC');
+       max-width: 15px;
+    }
+
+
+    a {
+      text-decoration: none;
+      word-wrap: break-word;
+    }
+    a.abbr:link{
+      color:black;
+      text-decoration:none;
+    }
+    a.abbr:visited{
+      color:black;
+      text-decoration:none;
+    }
+    a.abbr:hover{
+      color:blue;
+      text-decoration:none;
+    }
+    a.abbr:hover:visited{
+      color:purple;
+      text-decoration:none;
+    }
+    a.abbr:active{
+      color:red;
+      text-decoration:none;
+    }
+    .note-header{
+      font-weight: bold;
+    }
+    .note p:first-child{
+      display: inline;
+    }
+
+
+    /* Tooltip container */
+    .tooltipped {
+       position: relative;
+       display: inline-block;
+       border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+    }
+
+    /* Tooltip text */
+    .tooltiptext {
+       visibility: hidden;
+       width: 120px;
+       background-color: black;
+       color: #fff;
+       text-align: center;
+       padding: 5px 0;
+       border-radius: 6px;
+
+       /* Position the tooltip text - see examples below! */
+       position: absolute;
+       z-index: 1;
+   }
+
+   /* Show the tooltip text when you mouse over the tooltip container */
+   .tooltipped:hover .tooltiptext {
+       visibility: visible;
+   }
+
+   table.mfs td{
+       text-align: center;
+   }
+   table.mfs td:first-child{
+       text-align: left;
+   }
+   table{
+       margin:auto;
+       margin-top:1em;
+       border-collapse:collapse; /*border: 1px solid black;*/
+   }
+   td{
+       text-align:left;
+       padding:8px 8px;
+   }
+   th{
+       padding:8px 8px;
+   }
+   tr.header{
+       border-bottom:3px solid gray;
+       padding:8px 8px;
+       text-align:left;
+       font-weight:bold; /*font-size: 90%; font-family: verdana, arial, helvetica, sans-serif; */
+   }
+   table tr:nth-child(2n+2){
+       background-color:#F4F4F4;
+   }
+
+   
+		html {
+			font-family: verdana, arial, helvetica, sans-serif;
+		}
+		h1 {
+			text-align: center;
+			font-size: x-large;
+			margin-top: 2em; margin-bottom: 2em;
+    }
+		h2 {
+			font-size: large;
+      border-bottom: solid 1px gray;
+      margin-top: 2em; margin-bottom: 1em;
+		}
+    table.revisionhistory {
+			margin: auto; margin-top: 1em; border-collapse:collapse;
+				font-size:14px;
+		}
+		th.revisionhistory  {
+        border-bottom: 3px solid #dcdcdc;
+        border-left: none;
+        border-right: none;
+        vertical-align: bottom;
+				text-align: left;
+        padding: 2px;
+				padding-right: 20px;
+    }
+		td.revisionhistory  {
+        border: 2px solid #dcdcdc;
+        border-left: none;
+        border-right: none;
+        vertical-align: top;
+				text-align: left;
+        padding: 2px;
+				padding-right: 20px;
+    }
+
+		div.componenttitle
+		{
+			text-align: left; font-size: large; font-weight:bold;
+			margin-top: 1em;
+			margin-left: 2.5em;
+			margin-right: 3em;
+			border: solid 2px gray;
+      background-color: #dedede;
+			padding: 0.25em;
+		}
+		table.elementstyle
+		{
+				text-align: left;
+				font-size:14px;
+				margin-left: 3.5em;
+				margin-right: 6em;
+				margin-bottom: 2em;
+		}
+		tr.elementstyle {
+			vertical-align: top;
+
+		}
+		td.elementidstyle
+		{
+			font-weight: bold;
+			padding-right: 1em;
+			padding-top: 1em;
+		}
+		td.elementstyle {
+			padding-top: 1em;
+		}
+
+    pre {
+        white-space: pre-wrap;
+        white-space: -moz-pre-wrap !important;
+        word-wrap:break-word;
+    }
+		div.title
+		{
+			text-align: center; font-size: xx-large; font-weight:bold;
+            font-family: verdana,arial,sans-serif;
+			
+			margin-left: 8%; margin-right: 8%;
+		}
+		div.center	{ display: block; margin-left: auto; margin-right: auto; text-align:center; }
+		div.intro
+		{
+			text-align: left; font-size: normal;
+			margin-left: 12%; margin-right: 12%;
+			padding-top: 1em;
+		}
+
+		div.sectiontitle
+		{
+			text-align: left; font-size: x-large; font-weight:bold;
+			margin-top: 3em;
+			border-top: solid 2px gray;
+			border-bottom: solid 2px gray;
+			padding-bottom: 0.25em; padding-top: 0.25em;
+		}
+	    div.appnote    { margin-left: 0%; margin-top: 1em; }
+
+
+    	</style><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Requirements from the <i>Protection Profile for General-Purpose Computing Platforms</i></title></head><body><h1> Requirements from the <br></br><i>Protection Profile for General-Purpose Computing Platforms</i></h1><div class="center"><img src="images/niaplogo.png"></img><p></p>Version: 0.1<p></p>2019-12-13<p></p><b>National Information Assurance Partnership</b></div><h2>Revision History</h2><div class="center"><table class="revisionhistory"><tr><th class="revisionhistory">Version</th><th class="revisionhistory">Date</th><th class="revisionhistory">Comment</th></tr><tr><td class="revisionhistory">0.1</td><td class="revisionhistory">2019-12-13</td><td class="revisionhistory">Initial Draft</td></tr></table></div><h2>Introduction</h2><div class="intro"><b>Purpose.</b> This document presents the functional
+							and assurance requirements found in the <i>Protection Profile for General-Purpose Computing Platforms</i>.
+							Common Criteria evaluation, facilitated in the U.S. by the National
+							Information Assurance Partnership (NIAP), is required for IA and
+							IA-enabled products in National Security Systems according to CNSS
+							Policy #11. <p></p><b>Using this document.</b> This representation of the Protection Profile
+					includes: <p></p><ul><li><a href="#SFRs"><i>Security Functional Requirements</i></a> for use in
+							evaluation. These are featured without the formal Assurance Activities
+							specified in the Protection Profile, to assist the reader who is
+							interested only in the requirements. <p></p> It also includes, in tables
+							shown later, particular types of security functional requirements that
+							are not strictly required in all cases. These are:</li><p></p><ul><li><a href="#selbasedSFRs"><i>Selection-based Security Functional
+										Requirements</i></a> which become required when certain
+								selections are made inside the regular Security Functionality
+								Requirements (as indicated by the <b>[selection:]</b>
+								construct).</li><li><a href="#objSFRs"><i>Objective Security Functional
+									Requirements</i></a> which are highly desired but not yet
+								widely-available in commercial technology.</li><li><a href="#optSFRs"><i>Optional Security Functional
+									Requirements</i></a> which are available for evaluation and
+								which some customers may insist upon.</li></ul><p></p><li><a href="#SARs"><i>Security Assurance Requirements</i></a> which relate
+							to developer support for the product under evaluation, development
+							processes, and other non-functionality security relevant
+							requirements.</li></ul><p></p><p></p></div><br></br><div class="sectiontitle" id="SFRs"> Security Functional Requirements </div><div xmlns="" id="FAU_GEN.1" class="componenttitle"><a class="abbr" href="#FAU_GEN.1">Audit Data Generation</a></div>
+<table xmlns="" class="elementstyle">
+<tr class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> shall be able to generate an audit record of the following auditable events:
+                            <ol type="a">
+                                <li>Start-up and shutdown of audit functions</li>
+                                <li>All administrative actions</li>
+                                <li>[all auditable events defined in Table 1]</li>
+                                <li>[auditable events defined in Table 2 for included SFRs]</li>
+                                <li>[auditable events defined in Table 4 for included SFRs]</li>
+                                <li>[auditable events defined in Table 5 for included SFRs]</li>
+			    
+				<li>[<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>all auditable events defined in Table 3</i>, <i>no other auditable events</i>]</li>
+				    
+                            </ol>
+                        <br>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> shall record within each audit record at least the following information:
+                            <ol type="a">
+                                <li>Date and time of the event</li>
+                                <li>Type of event</li>
+                                <li>Subject and object identity (if applicable)</li>
+                                <li>The outcome (success or failure) of the event</li>
+                                <li>[Additional information defined in Table 1]</li>
+                                <li>[Additional information defined in Table 2 for included SFRs]</li>
+                                <li>[Additional information defined in Table 4 for included SFRs]</li>
+                                <li>[Additional information defined in Table 5 for included SFRs]</li>
+
+				<li>[<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>Additional information defined in Table 3</i>, <i>no other information</i>]</li>
+
+			    </ol>
+                        <br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">
+                            The <a class="abbr" href="#abbr_"><abbr title=""></abbr></a> author can include other auditable events directly in Table 1; they are not limited to
+				the list presented. The <a class="abbr" href="#abbr_"><abbr title=""></abbr></a> author should update the table in FAU_GEN.1.2 with any additional
+				information generated. “Subject identity” in FAU_GEN.1.2 could be a user id or an identifier specifying a 
+				<a class="abbr" href="#abbr_"><abbr title=""></abbr></a>, for example.<br><br>
+                            If ‘additional information defined in Table 3’ is selected, it is acceptable to include individual
+                            entries from Table 3 without including the entirety of Table 3.  Appropriate entries from Tables 2, 4,
+                            and 5 should be included in the <a class="abbr" href="#abbr_"><abbr title=""></abbr></a> if the associated SFRs and selections are included.
+				<br><br>
+                            The Table 1 entry for FDP_VNC_EXT.1 refers to configuration settings that attach <a class="abbr" href="#abbr_"><abbr title=""></abbr></a>s to 
+				virtualized network components. Changes to these configurations can be made during <a class="abbr" href="#abbr_"><abbr title=""></abbr></a> 
+				execution or when <a class="abbr" href="#abbr_"><abbr title=""></abbr></a>s are not running. Audit records must be generated for either case.
+				<br><br>
+                            The intent of the audit requirement for FDP_PPR_EXT.1 is to log that the <a class="abbr" href="#abbr_"><abbr title=""></abbr></a> is connected to a
+				physical device (when the device becomes part of the <a class="abbr" href="#abbr_"><abbr title=""></abbr></a>’s hardware view), not to log every
+				time that the device is accessed. Generally, this is only once at <a class="abbr" href="#abbr_"><abbr title=""></abbr></a> startup. However,
+				some devices can be connected and disconnected during operation (e.g., virtual USB devices such as CD-ROMs). 
+				All such connection/disconnection events must be logged.
+                        </span>
+</div>
+</td>
+</tr>
+</table>
+<div xmlns="" id="FCS_CKM.1" class="componenttitle"><a class="abbr" href="#FCS_CKM.1">Cryptographic Key Generation</a></div>
+<table xmlns="" class="elementstyle"><tr class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle"> The <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> shall generate asymmetric cryptographic keys in accordance with a specified 
+				cryptographic key generation algorithm
+                            [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <ul>
+<li>
+<i>
+                                    RSA schemes using cryptographic key sizes [2048-bit or greater] that meet the following:
+					[FIPS PUB 186-4, “Digital Signature Standard (DSS)”, Appendix B.3]
+                                </i>, </li>
+<li>
+<i>
+                                    ECC schemes using [“NIST curves” P-256, P-384, and
+                                    [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i> P-521 </i>, <i> no other curves </i>]
+                                    that meet the following: [FIPS PUB 186-4, “Digital Signature Standard (DSS)”, Appendix B.4]
+                                    </i>, </li>
+<li><i>
+                                    FFC schemes using cryptographic key sizes [2048-bit or greater] that meet the following: 
+					[FIPS PUB 186-4, “Digital Signature Standard (DSS)”, Appendix B.1]].
+                                </i></li>
+</ul>].
+                        <br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">The <a class="abbr" href="#abbr_"><abbr title=""></abbr></a> author selects all key generation schemes used for key
+				establishment and device authentication. When key generation is used for key establishment, the 
+				schemes in FCS_CKM.2.1 and selected cryptographic protocols shall match the selection. When key
+				generation is used for device authentication, the public key is expected to be associated with an
+				X.509v3 certificate.<br><br>
+                            If the <a class="abbr" href="#abbr_"><abbr title=""></abbr></a> acts as a receiver in the RSA key establishment scheme, the 
+				<a class="abbr" href="#abbr_"><abbr title=""></abbr></a> does not need to implement RSA key generation.
+                        </span>
+</div>
+</td>
+</tr></table>
+<div xmlns="" id="FDP_RIP_EXT.1" class="componenttitle"><a class="abbr" href="#FDP_RIP_EXT.1">Residual Information in Memory</a></div>
+<table xmlns="" class="elementstyle"><tr class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> shall ensure that any previous information content of physical memory is
+				cleared prior to allocation to a Guest <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a>.
+                        <br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">Physical memory must be zeroed before it is made accessible to a <a class="abbr" href="#abbr_"><abbr title=""></abbr></a>
+				for general use by a Guest OS.<br><br>
+                            The purpose of this requirement is to ensure that a <a class="abbr" href="#abbr_"><abbr title=""></abbr></a> does not receive memory 
+				containing data previously used by another <a class="abbr" href="#abbr_"><abbr title=""></abbr></a> or the host.<br><br>
+                            “For general use” means for use by the Guest OS in its page tables for running applications or system 
+				software.<br><br>
+                            This does not apply to pages shared by design or policy between <a class="abbr" href="#abbr_"><abbr title=""></abbr></a>s or between the 
+				<a class="abbr" href="#abbr_"><abbr title=""></abbr></a>s and <a class="abbr" href="#abbr_"><abbr title=""></abbr></a>s, such as read-only OS pages or pages used for virtual
+				device buffers.
+                        </span>
+</div>
+</td>
+</tr></table>
+<div xmlns="" id="FIA_UAU.5" class="componenttitle"><a class="abbr" href="#FIA_UAU.5">Multiple Authentication Mechanisms</a></div>
+<table xmlns="" class="elementstyle">
+<tr class="elementstyle">
+<td id="FIL-AUA" class="elementidstyle"><a class="abbr" href="#FIL-AUA">FIL-AUA</a></td>
+<td class="elementstyle">The <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> shall provide the following authentication mechanisms:
+                            [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <ul>
+<li>
+<i>
+                                    [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>local</i>, <i>directory-based</i>]
+                                    authentication based on username and password
+                                </i>, </li>
+<li>
+<i>authentication based on username and a PIN that releases an asymmetric key stored in
+					OE-protected storage</i>, </li>
+<li>
+<i>
+                                    [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>local</i>, <i>directory-based</i>]
+                                    authentication based on X.509 certificates
+                                </i>, </li>
+<li><i>
+                                    [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>local</i>, <i>directory-based</i>]
+                                    authentication based on an SSH public key credential
+                                </i></li>
+</ul>]                            
+                            to support Administrator authentication.
+                        <br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">Selection of ‘authentication based on username and password’ requires that 
+				FIA_PMG_EXT.1 be included in the <a class="abbr" href="#abbr_"><abbr title=""></abbr></a>. This also requires that the 
+				<a class="abbr" href="#abbr_"><abbr title=""></abbr></a> include a management function for password management. If the 
+				<a class="abbr" href="#abbr_"><abbr title=""></abbr></a> author selects ‘authentication based on an SSH public-key credential’, the
+				<a class="abbr" href="#abbr_"><abbr title=""></abbr></a> shall be validated against the Extended Package for Secure Shell.
+				<br><br>
+                            PINs used to access OE-protected storage are set and managed by the OE-protected storage mechanism. 
+				Thus requirements on PIN management are outside the scope of the <a class="abbr" href="#abbr_"><abbr title=""></abbr></a>.
+                        </span>
+</div>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> shall authenticate any Administrator’s claimed identity according to the 
+				[<b xmlns:htm="http://www.w3.org/1999/xhtml">assignment</b>: <span xmlns:htm="http://www.w3.org/1999/xhtml" class="assignable-content">rules describing how the multiple authentication mechanisms provide authentication
+				</span>].
+                        <br>
+</td>
+</tr>
+</table>
+<div xmlns="" id="FMT_SMO_EXT.1" class="componenttitle"><a class="abbr" href="#FMT_SMO_EXT.1">Separation of Management and Operational Networks</a></div>
+<table xmlns="" class="elementstyle">
+<tr class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> shall support the configuration of separate management and operational
+				networks through
+                            [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <i>physical means</i>, <i>logical means</i>, <i>trusted channel</i>].
+                        <br>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">
+                        <br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">Management communications must be separate from user workloads. Administrative 
+				communications—including communications between physical hosts concerning load balancing, audit data,
+				<a class="abbr" href="#abbr_"><abbr title=""></abbr></a> startup and shutdown—must be separate from guest operational networks.
+				<br><br>
+                            “Physical means” refers to using separate physical networks for management and operational networks. For
+				example, the machines in the management network are connected by separate cables plugged into separate
+				and dedicated physical ports on each physical host.<br><br>
+                            “Logical means” refers to using separate network cables to connect physical hosts together using 
+				general-purpose networking ports. The management and operational networks are kept separate within 
+				the hosts using separate virtualized networking components.<br><br>
+                            If the <a class="abbr" href="#abbr_"><abbr title=""></abbr></a> author selects “trusted channel”, then the protocols used for network 
+				separation must be selected in FTP_ITC_EXT.1.
+                        </span>
+</div>
+</td>
+</tr>
+</table>
+<div xmlns="" id="FPT_HAS_EXT.1" class="componenttitle"><a class="abbr" href="#FPT_HAS_EXT.1">Hardware Assists</a></div>
+<table xmlns="" class="elementstyle">
+<tr class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> shall use [<b xmlns:htm="http://www.w3.org/1999/xhtml">assignment</b>: <span xmlns:htm="http://www.w3.org/1999/xhtml" class="assignable-content">list of hardware-based virtualization assists
+				</span>] to reduce or eliminate the need for binary translation.
+                        <br>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> shall use [<b xmlns:htm="http://www.w3.org/1999/xhtml">assignment</b>: <span xmlns:htm="http://www.w3.org/1999/xhtml" class="assignable-content">list of hardware-based virtualization memory-handling
+				assists</span>] to reduce or eliminate the need for shadow page tables.
+                        <br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">These hardware-assists help reduce the size and complexity of the 
+				<a class="abbr" href="#abbr_"><abbr title=""></abbr></a>, and thus, of the trusted computing base, by eliminating or reducing the need 
+				for paravirtualization or binary translation. Paravirtualization involves modifying guest software so 
+				that instructions that cannot be properly virtualized are never executed on the physical processor.
+				<br><br>
+                            For the assignment in FPT_HAS_EXT.1, the <a class="abbr" href="#abbr_"><abbr title=""></abbr></a> author lists the hardware-based 
+				virtualization assists on all platforms included in the <a class="abbr" href="#abbr_"><abbr title=""></abbr></a> that are used by the 
+				<a class="abbr" href="#abbr_"><abbr title=""></abbr></a> to reduce or eliminate the need for software-based binary translation. Examples
+				for the x86 platform are Intel VT-x and AMD-V. “None” is an acceptable assignment for platforms that
+				do not require virtualization assists in order to eliminate the need for binary translation. This must 
+				be documented in the <a class="abbr" href="#abbr_"><abbr title=""></abbr></a>.<br><br>
+                            For the assignment in FPT_HAS_EXT.1.2, the <a class="abbr" href="#abbr_"><abbr title=""></abbr></a> author lists the set of hardware-based
+				virtualization memory-handling extensions for all platforms listed in the <a class="abbr" href="#abbr_"><abbr title=""></abbr></a> that
+				are used by the <a class="abbr" href="#abbr_"><abbr title=""></abbr></a> to reduce or eliminate the need for shadow page tables. Examples 
+				for the x86 platform are Intel EPT and AMD RVI. “None” is an acceptable assignment for platforms that
+				do not require memory-handling assists in order to eliminate the need for shadow page tables. This
+				must be documented in the <a class="abbr" href="#abbr_"><abbr title=""></abbr></a>.
+                        </span>
+</div>
+</td>
+</tr>
+</table>
+<div xmlns="" id="FTA_TAB.1" class="componenttitle"><a class="abbr" href="#FTA_TAB.1">TOE Access Banner</a></div>
+<table xmlns="" class="elementstyle"><tr class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">Before establishing an administrative user session, the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> shall display a
+                            security Administrator-specifiedad advisory notice and consent warning message regarding
+                            use of the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a>.
+                        <br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">
+                            This requirement is intended to apply to interactive sessions between a human user and a TOE. IT
+                            entities establishing connections or programmatic connections (e.g., remote procedure calls over
+                            a network) are not required to be covered by this requirement.<br><br>
+                        </span>
+</div>
+</td>
+</tr></table>
+<div class="sectiontitle" id="SARs"> Security Assurance Requirements </div><table class="elementstyle"><tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The developer shall provide a functional specification.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The developer shall provide a tracing from the functional specification to the SFRs.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The functional specification shall describe the purpose and method of use for each SFR-enforcing 
+				and SFR-supporting TSFI.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The functional specification shall identify all parameters associated with each SFR-enforcing and 
+				SFR-supporting TSFI.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The functional specification shall provide rationale for the implicit categorization of interfaces 
+				as SFR-non-interfering.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The tracing shall demonstrate that the SFRs trace to TSFIs in the functional specification.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The evaluator shall confirm that the information provided meets all requirements for content and
+				presentation of evidence.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The evaluator shall determine that the functional specification is an accurate and complete 
+				instantiation of the SFRs.<br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">
+                            There are no specific assurance activities associated with these SARs. The functional specification 
+				documentation is provided to support the evaluation activities described in Section 5.2, and other
+				activities described for AGD, ATE, and AVA SARs. The requirements on the content of the functional 
+				specification information is implicitly assessed by virtue of the other assurance activities being
+				performed; if the evaluator is unable to perform an activity because the there is insufficient
+				interface information, then an adequate functional specification has not been provided.
+                        </span>
+</div>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The developer shall provide operational user guidance.
+                        <br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The operational user guidance shall describe what the authorized user-accessible functions and
+				privileges that should be controlled in a secure processing environment, including appropriate 
+				warnings.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The operational user guidance shall describe, for the authorized user, how to use the available
+				interfaces provided by the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> in a secure manner.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The operational user guidance shall describe, for the authorized user, the available functions and
+				interfaces, in particular all security parameters under the control of the user, indicating secure
+				values as appropriate.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The operational user guidance shall, for the authorized user, clearly present each type of 
+				security-relevant event relative to the user-accessible functions that need to be performed, including
+				changing the security characteristics of entities under the control of the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a>.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The operational user guidance shall identify all possible modes of operation of the
+				<a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> (including operation following failure or operational error), their consequences
+				and implications for maintaining secure operation.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The operational user guidance shall, for the authorized user, describe the security measures to be
+				followed in order to fulfill the security objectives for the operational environment as described in
+				the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a>.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The operational user guidance shall be clear and reasonable.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The evaluator shall confirm that the information provided meets all requirements for content and
+				presentation of evidence.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The developer shall provide the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> including its preparative procedures.
+                        <br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The preparative procedures shall describe all the steps necessary for secure acceptance of the
+				delivered <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> in accordance with the developer’s delivery procedures.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The preparative procedures shall describe all the steps necessary for secure installation of the 
+				<a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> and for the secure preparation of the operational environment in accordance 
+				with the security objectives for the operational environment as described in the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a>.
+			    <br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The evaluator shall confirm that the information provided meets all requirements for content and 
+				presentation of evidence.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The evaluator shall apply the preparative procedures to confirm that the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> can be
+				prepared securely for operation.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The developer shall provide the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> and a reference for the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a>.
+                        <br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> shall be labeled with its unique reference.
+                        <br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The evaluator shall confirm that the information provided meets all requirements for content and 
+				presentation of evidence.
+                        <br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The developer shall provide a configuration list for the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a>.
+                        <br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The configuration list shall include the following: the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> itself; and the
+                            evaluation evidence required by the SARs.
+                        <br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The configuration list shall uniquely identify the configuration items.
+                        <br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The evaluator shall confirm that the information provided meets all requirements for content and
+				presentation of evidence.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The developer shall provide a description in the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> of how timely security updates
+				are made to the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a>.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The description shall include the process for creating and deploying security updates for the 
+				<a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> software/firmware.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The description shall express the time window as the length of time, in days, between public disclosure
+				of a vulnerability and the public availability of security updates to the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a>.<br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">
+                            The total length of time may be presented as a summation of the periods of time that each party (e.g.,
+				<a class="abbr" href="#abbr_"><abbr title=""></abbr></a> developer, hardware vendor) on the critical path consumes. The time period until
+				public availability per deployment mechanism may differ; each is described.</span>
+</div>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The description shall include the mechanisms publicly available for reporting security issues
+				pertaining to the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a>.<br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">
+                            The reporting mechanism could include web sites, email addresses, and a means to protect the sensitive
+				nature of the report (e.g., public keys that could be used to encrypt the details of a proof-of-concept
+				exploit).</span>
+</div>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The evaluator shall confirm that the information provided meets all requirements for content and 
+				presentation of evidence.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The developer shall provide the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> for testing.
+                        <br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> shall be suitable for testing.
+                        <br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The evaluator shall confirm that the information provided meets all requirements for content and 
+				presentation of evidence.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The evaluator shall test a subset of the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> to confirm that the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> 
+				operates as specified.
+                        <br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The developer shall provide the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> for testing.
+                        <br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> shall be suitable for testing.
+                        <br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The evaluator shall confirm that the information provided meets all requirements for content and
+				presentation of evidence.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The evaluator shall perform a search of public domain sources to identify potential vulnerabilities in
+				the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a>.<br>
+</td>
+</tr>
+<tr xmlns="" class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The evaluator shall conduct penetration testing, based on the identified potential vulnerabilities, to
+				determine that the <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> is resistant to attacks performed by an attacker possessing
+				Basic attack potential.<br>
+</td>
+</tr></table><div class="sectiontitle" id="selbasedSFRs"> Selection-Based Security Functional
+					Requirements </div><div class="sectiontitle" id="objSFRs"> Objective Security Functional Requirements </div><div xmlns="" id="FPT_ML_EXT.1" class="componenttitle"><a class="abbr" href="#FPT_ML_EXT.1">Measured Launch of Platform and VMM</a></div>
+<table xmlns="" class="elementstyle">
+<tr class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> shall support a measured launch of the Virtualization System. Measured components
+				of the Virtualization system shall include the static executable image of the Hypervisor and:
+                            [<b xmlns:htm="http://www.w3.org/1999/xhtml">selection</b>: <ul>
+<li>
+<i>Static executable images of the Management Subsystem</i>, </li>
+<li>
+<i>[<b xmlns:htm="http://www.w3.org/1999/xhtml">assignment</b>: <span xmlns:htm="http://www.w3.org/1999/xhtml" class="assignable-content">list of (static images of) Service <a class="abbr" href="#abbr_"><abbr title=""></abbr></a>s</span>]</i>, </li>
+<li>
+<i>[<b xmlns:htm="http://www.w3.org/1999/xhtml">assignment</b>: <span xmlns:htm="http://www.w3.org/1999/xhtml" class="assignable-content">list of configuration files</span>]</i>, </li>
+<li><i>no other components</i></li>
+</ul>]
+                        <br>
+</td>
+</tr>
+<tr class="elementstyle">
+<td id="" class="elementidstyle"><a class="abbr" href="#"></a></td>
+<td class="elementstyle">The <a xmlns:htm="http://www.w3.org/1999/xhtml" class="abbr" href="#abbr_"><abbr title=""></abbr></a> shall make these measurements available to the Management Subsystem.
+                        <br><div xmlns:htm="http://www.w3.org/1999/xhtml" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">
+                            A measured launch of the platform and Virtualization System, demonstrates that the proper 
+				<a class="abbr" href="#abbr_"><abbr title=""></abbr></a> software was loaded. A measured launch process employs verifiable integrity 
+				measurement mechanisms. For example, a TOE may hash components such as: the hypervisor, service
+				<a class="abbr" href="#abbr_"><abbr title=""></abbr></a>s and/or the Management Subsystem. A measured launch process only allows components
+				to be executed after the measurement has been recorded. An example process may add each component’s 
+				hash before it is executed so that the final hash reflects the evidence of a component’s state prior 
+				to execution. The measurement may be verified as the system boots, but this is not required.<br><br>
+                            The Platform is outside of the <a class="abbr" href="#abbr_"><abbr title=""></abbr></a>. However, this requirement specifies that the TOE must
+				be capable of receiving Platform measurements if the Platform provides them. This requirement is 
+				requiring <a class="abbr" href="#abbr_"><abbr title=""></abbr></a> support for Platform measurements if provided; it is not placing a
+				requirement on the Platform to take such measurements.<br><br>
+                            If available, hardware should be used to store measurements in such a manner that they cannot be modified
+				in any manner except to be extended. These measurements should be produced in a repeatable manner so
+				that a third party can verify the measurements if given the inputs. Hardware devices, like Trusted
+				Platform Modules (TPM), TrustZone, and MMU are some examples that may serve as foundations for storing
+				and reporting measurements.<br><br>
+                            Platforms with a root of trust for measurement (RTM) should initiate the measured launch process. This may
+				include core BIOS or the chipset. The chipset is the preferred RTM, but core BIOS or other firmware is
+				acceptable. In system without a traditional RTM, the first component that boots would be considered
+				the RTM, this is not preferred.
+                        </span>
+</div>
+</td>
+</tr>
+</table>
+<div class="sectiontitle" id="optSFRs"> Optional Security Functional Requirements </div></body></html>

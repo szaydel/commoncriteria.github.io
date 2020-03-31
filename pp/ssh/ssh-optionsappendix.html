@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:cc="https://niap-ccevs.org/cc/v1" xmlns:htm="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Functional Package for Secure Shell (SSH)</title><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+            showMathMenu: false,
+            tex2jax: {
+              inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+              displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+              processEscapes: true
+            },
+            styles: {
+
+                ".MathJax_Display": {
+                "text-align": "left !important",
+                margin:       "0em 0em !important"
+            }}
+            });
+        </script><script type="text/javascript">
+
+function fixToolTips(){
+  var tooltipelements = document.getElementsByClassName("tooltiptext");
+  var aa;
+  for(aa=tooltipelements.length-1; aa>=0; aa--){
+      tooltipelements[aa].parentNode.classList.add("tooltipped");
+  }
+}
+    	  
+
+const AMPERSAND=String.fromCharCode(38);
+const NBSP=String.fromCharCode(160,160,160);
+
+
+function buildIndex(){
+    
+    var eles = document.getElementsByClassName("indexable");
+    var toc = document.getElementById("toc");
+    var aa=0, bb=0;
+
+    // prefix_array tracks the current numbering as we iterate through the document
+    var prefix_array=[];
+    var isAlpha=false;
+    // Run through all the indexable
+    while(eles.length > aa){
+        var spacer="";
+        if( eles[aa].hasAttribute("data-level-alpha") && !isAlpha){
+           prefix_array=[];
+           isAlpha=true;
+        }
+
+        // Current numbering level depth
+        level = eles[aa].getAttribute("data-level");
+
+        // Add numbering levels to array if level of depth increases
+        while (level>prefix_array.length) {
+          prefix_array.push(0);
+	      }
+
+        // Truncate levels of array if numbering level decreases
+        if(prefix_array.length>level){
+          prefix_array.length=level;
+        }
+
+        // Increment the level we're currently on
+        prefix_array[level-1]++;
+
+        // Make appendices use an alphabetical identifier.
+        // This will not work for documents with greater than 26 appendices
+        var prefix=""+(isAlpha?String.fromCharCode(64 +prefix_array[0]):prefix_array[0]);
+
+        // If level is exactly 1, add a period for sake of appearance
+        if (level == 1) {
+          prefix+=".";
+        }
+
+        // Add numbering levels for each level higher than 1
+        for (bb=1; level>bb; bb++) {
+          prefix+="."+prefix_array[bb];
+          spacer+=NBSP;
+        }
+
+        // Insert the prefix/identifier into the document
+        eles[aa].firstElementChild.innerHTML=prefix;
+
+        // Build the toc entry
+        var div= document.createElement('div');
+        toc.appendChild(div);
+        var line = document.createTextNode(spacer);
+        div.appendChild(line);
+        line = document.createElement('a');
+        line.href="#"+eles[aa].id;
+        line.class="toc-link"
+        line.innerHTML=eles[aa].textContent;
+        div.appendChild(line);
+
+        // Go to the next element
+        aa++;
+    }
+}
+
+
+function changeMyCounter(subroot, val){
+    var bb;
+    for(bb=0; bb!=subroot.childNodes.length; bb++){
+    	if( subroot.childNodes[bb] instanceof Element &&
+    	    "counter"==subroot.childNodes[bb].getAttribute("class")){
+    	    subroot.childNodes[bb].innerHTML = val;
+    	    return;
+    	}
+    }
+}
+
+
+function fixCounters(type){
+    var figs = document.getElementsByClassName("ctr");
+    var occurs = {};                                         // Map that stores how many times we've seen each thing
+    var aa;
+    for(aa=0; aa!= figs.length; aa++){                       // Go through every counted object
+    	var ct = figs[aa].getAttribute("data-counter-type");  // Get which counter type it is
+    	var curr = occurs[ct]!=null?parseInt(occurs[ct]):1;   // Figure out how many times we've seen it
+    	occurs[ ct ] = curr + 1;                              // Save off increment for next time
+    	changeMyCounter( figs[aa], curr);
+
+    	var figId = figs[aa].getAttribute("data-myid");
+    	var figRefs = document.getElementsByClassName(figId+"-ref");
+    	var bb;
+        for(bb=0; bb!=figRefs.length; bb++){
+    	    changeMyCounter(figRefs[bb], curr);
+    	}
+    }
+}
+
+// Function to expand and contract a given div
+function toggle(descendent) {
+    var cl = descendent.parentNode.parentNode.classList;
+    if (cl.contains('hide')){
+      cl.remove('hide');
+    }
+    else{
+      cl.add('hide');
+    }
+}
+
+// Expands targets if they are hidden
+function showTarget(id){
+    var element = document.getElementById(id);
+    while (element != document.body.rootNode ){
+	element.classList.remove("hide");
+	element = element.parentElement;
+    }
+}
+function fixIndexRefs(){
+    var brokeRefs = document.getElementsByClassName("dynref");
+    var aa=0;
+    for(aa=0; brokeRefs.length>aa; aa++){
+       var linkend=(""+brokeRefs[aa].getAttribute("href")).substring(1);
+       var target = document.getElementById(linkend);
+       if (target == null ){
+          console.log("Could not find element w/ id: " + linkend);
+          continue;
+       }
+       brokeRefs[aa].innerHTML+=target.firstElementChild.textContent;
+    }
+}
+
+// Called on page load to parse URL parameters and perform actions on them.
+function init(){
+    fixCounters("figure");
+    buildIndex();
+    fixIndexRefs();
+    fixToolTips();
+    if(getQueryVariable("expand") == "on"){
+      expand();
+    }
+}
+
+// Pass a URL variable to this function and it will return its value
+function getQueryVariable(variable)
+{
+    var query = window.location.search.substring(1);
+    var vars = query.split(AMPERSAND);
+    for (var i=0;i!=vars.length;i++) {
+        var pair = vars[i].split("=");
+        if(pair[0] == variable){return pair[1];}
+    }
+    return(false);
+}
+
+
+//    Expands all evaluation activities
+function expand(){
+    var ap = document.getElementsByClassName('activity_pane');
+    for (var ii = ap.length - 1; ii >= 0; --ii) {
+        ap[ii].classList.remove('hide');
+    }
+}
+        </script><style type="text/css">
+    .assignable-content{
+      font-style: italic;
+    }
+    .refinement{
+      text-decoration: underline;
+    }
+
+    .activity_pane .toggler::after, .activity_pane .toggler{ 
+       display: inline-block;
+       height: auto;
+       content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8A\
+       AAAPCAYAAAA71pVKAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAQOFAAEDhQGl\
+       VDz+AAAAB3RJTUUH4gIXFDM7fhmr1wAAAfRJREFUKM+dkk9I02EYxz/P+25uurWR\
+       tTkzI4NGl4jQgkq71K1DhnTQIDolRAQFQYSHTtGhU4e6eujQofBSFLOg0C4RUSjh\
+       FnmqTTdKpj/mfv/eX4cUpmRYn9vz8v3w8D7PA/AWGADCbI4QcAb4AnAF8IBJEdX+\
+       N0tEda40C4AHADviW1LFvpOX6+FwtAacVzqkGiWtwxo4F21OuPu7+yvxRNoDEhpY\
+       cpzavkQyc7D76FCk+vN7j7VU6RdR4xAsikjGGP9FKrN3sPfEpajv2i2zhckR4JUG\
+       UCr0erFavLkn2ytd2WPxcFOsZb74+SIQA0YPHBqIdB8Z6tChJv1m/N4P33OGAUsD\
+       BIFxPNcOkq07jyeSbbo1tTu2q6vHEqU7D/ddSKcz2ZQJjBSmx925b9NjwEMAafha\
+       eyQa/3Dq7O0243sCIEoRGAOA59nm5dM7OHVruzH+AkDjYEp23RrLT+U8Ub+fV0UR\
+       oVyaMfVa9fqquF5GKX3ja2FCuc6yWbMipYNP755UgEdr8o2FMf5ivVYdKRfzRkRW\
+       RfJTOc+2rWdAcUN5hdGP7x8viGgAXLvGbGFCKxW6tj74J3nOqVvP89M5V6kQ86UZ\
+       f7lWvWWMt7Sp41VKb21uSfqnB++6kWi8BLTzL4ioq7H4tgC4z3/QAZSBxEaBXygN\
+       v+jeFnAPAAAAAElFTkSuQmCC');
+       max-width: 15px;
+    }
+
+
+    a {
+      text-decoration: none;
+      word-wrap: break-word;
+    }
+    a.abbr:link{
+      color:black;
+      text-decoration:none;
+    }
+    a.abbr:visited{
+      color:black;
+      text-decoration:none;
+    }
+    a.abbr:hover{
+      color:blue;
+      text-decoration:none;
+    }
+    a.abbr:hover:visited{
+      color:purple;
+      text-decoration:none;
+    }
+    a.abbr:active{
+      color:red;
+      text-decoration:none;
+    }
+    .note-header{
+      font-weight: bold;
+    }
+    .note p:first-child{
+      display: inline;
+    }
+
+
+    /* Tooltip container */
+    .tooltipped {
+       position: relative;
+       display: inline-block;
+       border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+    }
+
+    /* Tooltip text */
+    .tooltiptext {
+       visibility: hidden;
+       width: 120px;
+       background-color: black;
+       color: #fff;
+       text-align: center;
+       padding: 5px 0;
+       border-radius: 6px;
+    
+       /* Position the tooltip text - see examples below! */
+       position: absolute;
+       z-index: 1;
+   }
+
+   /* Show the tooltip text when you mouse over the tooltip container */
+   .tooltipped:hover .tooltiptext {
+       visibility: visible;
+   }
+
+   table.mfs td{
+       text-align: center;
+   }
+   table.mfs td:first-child{
+       text-align: left;
+   }
+   
+
+          /*       { background-color: #FFFFFF; } */
+          body{
+              margin-left:8%;
+              margin-right:8%;
+              foreground:black;
+          }
+          .figure{
+              font-weight:bold;
+          }
+          h1{
+              page-break-before:always;
+              text-align:left;
+              font-size:200%;
+              margin-top:2em;
+              margin-bottom:2em;
+              font-family:verdana, arial, helvetica, sans-serif;
+              margin-bottom:1.0em;
+          }
+          h1.title{
+              text-align:center;
+          }
+          h2{
+              font-size:125%;
+              border-bottom:solid 1px gray;
+              margin-bottom:1.0em;
+              margin-top:2em;
+              margin-bottom:0.75em;
+              font-family:verdana, arial, helvetica, sans-serif;
+          }
+          h3{
+              font-size:110%;
+              margin-bottom:0.25em;
+              font-family:verdana, arial, helvetica, sans-serif;
+          }
+          h4{
+              margin-left:0%;
+              font-size:100%;
+              margin-bottom:0.75em;
+              font-family:verdana, arial, helvetica, sans-serif;
+          }
+          h5,
+          h6{
+              margin-left:6%;
+              font-size:90%;
+              margin-bottom:0.5em;
+              font-family:verdana, arial, helvetica, sans-serif;
+          }
+          p{
+              margin-bottom:0.6em;
+              margin-top:0.2em;
+          }
+          pre{
+              margin-bottom:0.5em;
+              margin-top:0.25em;
+              margin-left:3%;
+              font-family:monospace;
+              font-size:90%;
+          }
+          ul{
+              margin-bottom:0.5em;
+              margin-top:0.25em;
+          }
+          td{
+              vertical-align:top;
+          }
+          dl{
+              margin-bottom:0.5em;
+              margin-top:0.25em;
+          }
+          dt{
+              margin-top:0.7em;
+              font-weight:bold;
+              font-family:verdana, arial, helvetica, sans-serif;
+          }
+
+          a.linkref{
+              font-family:verdana, arial, helvetica, sans-serif;
+              font-size:90%;
+          }
+
+          *.simpleText{
+              margin-left:10%;
+          }
+          *.propertyText{
+              margin-left:10%;
+              margin-top:0.2em;
+              margin-bottom:0.2em
+          }
+          *.toc{
+              background:#FFFFFF;
+          }
+          *.toc2{
+              background:#FFFFFF;
+          }
+          div.comp{
+              margin-left:8%;
+              margin-top:1em;
+              margin-bottom:1em;
+          }
+          div.element{
+              margin-bottom:1em;
+          }
+          div.appnote{
+              margin-left:0%;
+              margin-top:1em;
+          }
+          .comment-aa{
+              background-color:beige;
+              color:green;
+          }
+          div.subaact{
+              margin-left:0%;
+              margin-top:1em;
+          }
+          div.activity_pane_body{
+              margin-left:0%;
+              margin-top:1em;
+              margin-bottom:1em;
+              padding:1em;
+              border:2px solid #888888;
+              border-radius:3px;
+              display:block;
+              margin-left:0%;
+              margin-top:1em;
+              margin-bottom:1em;
+              box-shadow:0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+          }
+          div.optional-appendicies{
+              display:none;
+          }
+
+          div.statustag{
+              margin-left:0%;
+              margin-top:1em;
+              margin-bottom:1em;
+              padding: 0.6em;
+              border:2px solid #888888;
+              border-radius:3px;
+          }
+
+          div.toc{
+              margin-left:8%;
+              margin-bottom:4em;
+              padding-bottom:0.75em;
+              padding-top:1em;
+              padding-left:2em;
+              padding-right:2em;
+          }
+          span.SOlist{
+              font-size:90%;
+              font-family:verdana, arial, helvetica, sans-serif;
+          }
+          h2.toc{
+              border-bottom:none;
+              margin-left:0%;
+              margin-top:0em;
+          }
+          p.toc{
+              margin-left:2em;
+              margin-bottom:0.2em;
+              margin-top:0.5em;
+          }
+          p.toc2{
+              margin-left:5em;
+              margin-bottom:0.1em;
+              margin-top:0.1em;
+          }
+          table{
+              margin:auto;
+              margin-top:1em;
+              border-collapse:collapse; /*border: 1px solid black;*/
+          }
+          td{
+              text-align:left;
+              padding:8px 8px;
+          }
+          th{
+              padding:8px 8px;
+          }
+          tr.header{
+              border-bottom:3px solid gray;
+              padding:8px 8px;
+              text-align:left;
+              font-weight:bold; /*font-size: 90%; font-family: verdana, arial, helvetica, sans-serif; */
+          }
+          table tr:nth-child(2n+2){
+              background-color:#F4F4F4;
+          }
+          div.center{
+              display:block;
+              margin-left:auto;
+              margin-right:auto;
+              text-align:center;
+          }
+          div.figure{
+              display:block;
+              margin-left:auto;
+              margin-right:auto;
+              text-align:center;
+              margin-top:1em;
+          }
+          div.activity_pane_header{
+              display:table-cell;
+              vertical-align:middle;
+              padding-top:10px
+          }
+          span.activity_pane_label{
+              vertical-align:middle;
+              color:black;
+              text-decoration:none;
+              font-size:100%;
+              font-weight:bold; /*font-family: verdana, arial, helvetica, sans-serif; */
+          }
+
+          @media screen{
+              *.reqid{
+                  float:left;
+                  font-size:90%;
+                  font-family:verdana, arial, helvetica, sans-serif;
+                  margin-right:1em;
+              }
+              *.req{
+                  margin-left:0%;
+                  margin-top:1em;
+                  margin-bottom:1em;
+              }
+              *.reqdesc{
+                  margin-left:20%;
+              }
+
+              .activity_pane.hide .toggler::after, .activity_pane.hide .toggler{
+	          content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8A\
+		  AAAPCAYAAAA71pVKAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAQOFAAEDhQGl\
+		  VDz+AAAAB3RJTUUH4gIXFC4BR3keeQAAAfZJREFUKM+d0k1PE1EUBuB37h2nQ+30\
+		  w5YObR0FhIppqBgWuDCaSBQjiQZNTIxLfoAkBHXh2vg7xID+ABPXBl3UdAMaN1CR\
+		  j5ZijZ22DKW9d44LP1KMROvZnMU5z+KcvBzAAgADwCdV1RzXlYQ26tYhrYM6u/qX\
+		  ATwCcKodrAOYv3z9IV28OuP6/NHPAGYZ45G/QQ5AAFjNbyzdTA2NewcGx7xeI5wu\
+		  FZenQOQQuasHncN/9IJo1sn+unkpbqVFIJhgydQo13VjDKCJSnnLBJAHUPoTBoA3\
+		  uzvlfiNgDhn+KMiVCB6xYCZSoaPHz5wrba/cbuztpBWFvQLI+R2DSGZqleKNuJX2\
+		  cVVjAIExDo/uV7pPjGhSNntrleI9+n7Ox33Y549Wq/ZWTyh8rNcfjPlaZ4xzZvUM\
+		  ezrNvnJ+fXFCiL2k2rpQq2wnAqH4tYjZFyZq/Y8CKZoim51z1nIZQ4jGNIC5fZhz\
+		  7fHA4JVuj26AyIWiMDSbdTi1L/T29RO7ahdfKgqbInJLANCKZ6Kx5J24dVowztW6\
+		  Y+8WNt91FNYXc4WN988BzAL4QOT+Aj/x8GFf+MHI+UlI2cBS9kVlLZfxSFdMS9GY\
+		  V1WtKETDPShhz85emLRHx++TETBLAJ4qCov8c7ajsZMr/5PtBQB3AXSpqsbagd8A\
+		  O+HMRUtPNsQAAAAASUVORK5CYII=');
+              }
+
+              .activity_pane.hide .activity_pane_body{
+                  display:none;
+              }
+              div.statustag{
+                  box-shadow:4px 4px 3px #888888;
+              }
+          }
+
+
+          @media print{
+              *.reqid{
+                  font-size:90%;
+                  font-family:verdana, arial, helvetica, sans-serif;
+              }
+              *.req{
+                  margin-left:0%;
+                  margin-top:1em;
+                  margin-bottom:1em;
+              }
+              *.reqdesc{
+                  margin-left:20%;
+              }
+              div.activity_pane_body{
+                  padding:1em;
+                  border:2px solid #888888;
+                  border-radius:3px;
+                  display:block;
+              }
+
+	            img[src="images/collapsed.png"] { display:none;}
+
+          }
+
+	  </style></head><body onLoad="init()"><h1 class="title" style="page-break-before:auto;">Functional Package for Secure Shell (SSH)</h1><noscript><h1 style="text-align:center; border-style: dashed; border-width: medium; border-color: red;">This page is best viewed with JavaScript enabled!</h1></noscript><div class="center"><img src="images/niaplogo.png" alt="NIAP"></img><br></br><p></p>Version: 1.0<p></p>2019-08-21<p></p><b>National Information Assurance Partnership</b></div><h2 style="page-break-before:always;">Revision History</h2><table><tr class="header"><th>Version</th><th>Date</th><th>Comment</th></tr><tr><td>1.0</td><td>2019-08-21</td><td>First Draft - Functional Package for Secure Shell</td></tr></table><h2>Contents</h2><div class="toc" id="toc"></div><h1 id="int" class="indexable" data-level="1"><span class="num"></span>   Introduction</h1>
+    <h2 id="ppoverview" class="indexable" data-level="2"><span class="num"></span>   Overview</h2>Secure Shell (SSH) is a
+    protocol for secure remote login and other secure network services over
+    an untrusted network. SSH software can act as a client, server, or both.
+      <p xmlns=""></p>
+      This "Functional Package for Secure Shell" (short name "SSH-PKG")
+      defines functional requirements for the implementation of the SSH protocol. The requirements are
+      intended to improve the security of products by enabling their evaluation.
+
+
+    <h2 id="glossary" class="indexable" data-level="2"><span class="num"></span>   Terms</h2>
+      <h3 id="ccterms" class="indexable" data-level="3"><span class="num"></span>   Common Criteria Terms</h3>
+        <table><tr><td><span id="abbr_CC">Common Criteria (<abbr>CC</abbr>)</span></td><td>Common Criteria for Information Technology Security
+              Evaluation.</td></tr><tr><td><span id="abbr_Package">Package (<abbr>Package</abbr>)</span></td><td>A named set of security requirements.  A Package is either a Functional
+              Package containing only Security Functional Requirements (SFRs), or an Assurance Package containing only Security Assurance Requirements (SARs).  Packages
+              can be used in the construction of larger Packages, Protection Profiles (PPs), and Security Targets (STs).
+            </td></tr><tr><td><span id="abbr_PP">Protection Profile (<abbr>PP</abbr>)</span></td><td>An implementation-independent set of security requirements for a category
+              of products.</td></tr><tr><td><span id="abbr_PP-Module">Protection Profile Module (<abbr>PP-Module</abbr>)</span></td><td>An extension of the security requirements in a
+              PP that introduces new elements to the Base-PP
+              and may also refine or interpret some of the elements in the Base-PP.
+            </td></tr><tr><td><span id="abbr_ST">Security Target (<abbr>ST</abbr>)</span></td><td>A set of implementation-dependent security requirements for a specific
+              product.</td></tr><tr><td><span id="abbr_TOE">Target of Evaluation (<abbr>TOE</abbr>)</span></td><td>
+              The product under evaluation.
+            </td></tr><tr><td><span id="abbr_TSF">TOE Security Functionality (<abbr>TSF</abbr>)</span></td><td>The security functionality of the product under evaluation.</td></tr><tr><td><span id="abbr_TSS">TOE Summary Specification (<abbr>TSS</abbr>)</span></td><td>A description of how a <a xmlns="" class="abbr" href="#abbr_TOE"><abbr title="Target of Evaluation">TOE</abbr></a> satisfies the SFRs in a <a xmlns="" class="abbr" href="#abbr_ST"><abbr title="Security Target">ST</abbr></a>. </td></tr><tr><td><span id="abbr_SFR">Security Functional Requirement (<abbr>SFR</abbr>)</span></td><td>A requirement for security enforcement by the <a xmlns="" class="abbr" href="#abbr_TOE"><abbr title="Target of Evaluation">TOE</abbr></a>.
+            </td></tr></table>
+      
+      <h3 id="techterms" class="indexable" data-level="3"><span class="num"></span>   Technology Terms</h3>
+        
+        
+        <table><tr><td>
+              <span id="abbr_SSH">Secure Shell (<abbr>SSH</abbr>)</span>
+            </td><td>Cryptographic network protocol for initiating text-based shell sessions on remote systems.
+            </td></tr></table>
+      
+    
+    
+    <h2 id="docformat" class="indexable" data-level="2"><span class="num"></span>   Format of this Document</h2>
+      
+      <a href="#req" class="dynref">Section </a> contains baseline requirements
+      that must be implemented in the product and included in any PP, PP-Module, or ST
+      that claims conformance to this Package.
+      There are three other types of requirements that can be included in a PP, PP-Module, or ST
+      claiming conformance to this Package:
+      <ul xmlns="">
+        <li>
+          
+          <a xmlns="http://www.w3.org/1999/xhtml" href="#optional" class="dynref">Appendix </a> contains requirements that may optionally be included
+          in the PP, PP-Module, or ST, but inclusion is at the discretion of the 
+          author.  For requirements with selections, if the PP or PP-Module allows the selection (or the ST
+          chooses particular selections), then there are additional requirements based on these
+          selections contained in this appendix that will need to be included in the PP, PP-Module, or ST.
+        </li>
+        <li>
+          <a xmlns="http://www.w3.org/1999/xhtml" href="#sel-based" class="dynref">Appendix </a> contains requirements based on selections
+          in the requirements specified in <a xmlns="http://www.w3.org/1999/xhtml" href="#req" class="dynref">Section </a>: if certain selections are
+          made, then the corresponding requirements in this appendix must be included.
+        </li>
+        <li>
+          <a xmlns="http://www.w3.org/1999/xhtml" href="#objective" class="dynref">Appendix </a> contains requirements that will
+          be included in the baseline requirements in future versions of this Package. Earlier adoption by vendors is
+          encouraged. Otherwise, these are treated the same as optional requirements.
+        </li>
+      </ul>
+    
+    
+    <h2 id="TOEdescription" class="indexable" data-level="2"><span class="num"></span>   Compliant Targets of Evaluation</h2>The Target of Evaluation
+    (TOE) in this Package is a product which acts as an SSH client, SSH server, or both. This Package describes the extended security functionality of SSH in terms of 
+     <a href="#bibCC">[CC]</a>. 
+      <p xmlns=""></p>
+     The contents of this Package must be appropriately combined with a PP or PP-Module. When a PP or PP-Module instantiates this Package, the Package must include 
+     selection-based requirements in accordance with the selections or assignments indicated in the PP or PP-Module.
+      <p xmlns=""></p>
+     The PP or PP-Module that instantiates this Package must typically include the following components in order to satisfy dependencies of this Package. 
+     It is the responsibility of the PP or PP-Module author who instantiates this Package to ensure that dependence on these components is satisfied, either by the TOE or by assumptions about its Operational Environment.
+      <p xmlns=""></p>
+      
+      
+        
+          FCS_CKM.1
+          To support key generation for SSH, the PP or PP-Module must
+            include FCS_CKM.1 and specify the corresponding algorithm.
+        
+        
+          FCS_CKM.2
+          To support key establishment for SSH, the PP or PP-Module must
+            include FCS_CKM.2 and specify the corresponding algorithm.
+        
+        
+          FCS_COP.1
+          
+            To support the cryptography needed for SSH communications, the PP or PP-Module must include FCS_COP.1 (iterating as needed) to specify AES with corresponding 
+            key sizes and modes, digital signature generation and verification function (at least one of RSA or ECDSA), a cryptographic hash function, and a keyed-hash message 
+            authentication function.
+          
+        
+        
+        
+          FCS_RBG_EXT.1
+          To support random bit generation needed for SSH key generation,
+            the PP or PP-Module must include a requirement that specifies the TOE's ability to invoke or provide random bit generation services, commonly identified as 
+            FCS_RBG_EXT.1.
+        
+        
+          FIA_X509_EXT.1
+          
+            To support establishment of SSH communications using a public key algorithm that includes X.509, 
+            the PP or PP-Module must include FIA_X509_EXT.1. Note however that support for X.509 is selectable and not mandatory.
+          
+        
+        
+          FIA_X509_EXT.2
+          
+            To support establishment of SSH communications using a public key algorithm that includes X.509, 
+            the PP or PP-Module must include FIA_X509_EXT.2. Note however that support for X.509 is selectable and not mandatory.
+          
+        
+        
+          FPT_STM.1
+          
+            To support establishment of SSH communications using a public key algorithm that includes X.509, 
+            the PP or PP-Module must include FPT_STM.1 or some other requirement that ensures reliable system time.  
+            Note however that support for time-based rekey thresholds is selectable and not mandatory.
+          
+        
+      
+      <p xmlns=""></p>
+      An ST must identify the applicable version of the <a xmlns="" class="abbr" href="#abbr_PP"><abbr title="Protection Profile">PP</abbr></a> or
+      <a xmlns="" class="abbr" href="#abbr_PP-Module"><abbr title="Protection Profile Module">PP-Module</abbr></a> and this
+      Package in its conformance claims.
+    
+  <h1 id="conf" class="indexable" data-level="1"><span class="num"></span>   Conformance Claims</h1>
+    <dl><dt>Conformance Statement</dt><dd>This Package serves to provide PPs and PP-Modules with additional 
+          SFRs and associated Evaluation Activities specific to SSH clients and servers.  
+          <p xmlns=""></p>
+          This Package conforms to Common Criteria
+          <a href="#bibCC">[CC]</a> for Information Technology Security Evaluation, Version 3.1,
+          Revision 5. It is CC Part 2 extended.
+          <p xmlns=""></p>
+          In accordance with CC Part 1, dependencies are not included when they are addressed
+          by other SFRs. The evaluation activities provide adequate proof that any dependencies are
+          also satisfied.</dd></dl>
+  <h1 id="req" class="indexable" data-level="1"><span class="num"></span>   Security Requirements</h1>This chapter describes the security requirements
+  to be fulfilled by the product. Those requirements comprise functional components from Part 2 of 
+  <a href="#bibCC">[CC]</a>. The following notations are used: 
+    <ul xmlns="">
+      <li>
+        <b>Refinement</b> operation (denoted by <b>bold text</b>): Used to add details to a
+        requirement, and thus further restricts a requirement.</li>
+      <li>
+        <b>Selection</b> operation (denoted by <i>italicized text</i>): Used to select one or more options
+        provided by the <a xmlns="http://www.w3.org/1999/xhtml" href="#bibCC">[CC]</a> in stating a requirement. Selections are also enclosed in square brackets.</li>
+      <li>
+        <b>Assignment</b> operation (denoted by <span class="assignable-content">italicized text</span>): Used to assign a
+        specific value to an unspecified parameter, such as the length of a password. Assignments are also enclosed in square brackets.</li>
+      <li>
+        <b>Iteration</b> operation: Identified with a slash followed by a unique text string (e.g.
+        "/SSH").</li>
+    </ul>
+  <h2 id="sfr" class="indexable" data-level="2"><span class="num"></span>   Security Functional Requirements</h2>The SFRs
+  included in this section are derived from Part 2 of the Common Criteria for Information
+  Technology Security Evaluation, Version 3.1, Revision 5, with additional extended functional
+  components. 
+  <h3 id="fcs" class="indexable" data-level="3"><span class="num"></span>   Cryptographic Support (FCS)</h3>
+    <div class="comp" id="FCS_COP.1/SSH"><h4>FCS_COP.1/SSH Cryptographic Operation (AES-CTR Encryption/Decryption for SSH)</h4>
+      <div class="element"><div class="reqid" id="FCS_COP.1.1/SSH"><a href="#FCS_COP.1.1/SSH" class="abbr">FCS_COP.1.1/SSH</a></div><div class="reqdesc">
+        The <b xmlns="">SSH software shall [<b>selection</b>: <i>perform</i>, <i>invoke-platform-provided</i>]</b> [<i xmlns="">encryption/decryption services for data</i>] in accordance
+          with a specified cryptographic algorithm [<i xmlns="">AES-CTR (as defined in NIST SP 800-38A)
+            mode</i>] and cryptographic key sizes [<i xmlns="">128-bit, 256-bit</i>].
+        
+         
+        
+        <div xmlns="" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">This Package may be used for a TOE that conforms to a PP that permits the TOE's use of platform cryptography (such as the Protection Profile for Application Software). In this case, the TOE may rely on its platform 
+          to provide the cryptographic functionality used to support the TOE's SSH function. If the SSH software does provide its own cryptography, the ST should indicate which cryptographic SFRs from its claimed PP are used to implement SSH functionality.
+        </span>
+</div>
+        
+        <div class="activity_pane hide"><div class="activity_pane_header"><a onclick="toggle(this);return false;" href="#"><span class="activity_pane_label"> Evaluation Activity </span><span class="toggler"></span></a></div><div class="activity_pane_body"><i>
+          
+          The evaluator shall examine the TSS to verify that it describes whether the TSF or TOE platform is responsible for the implementation of  
+          the cryptographic functionality needed to support SSH communications.
+          <p xmlns=""></p>
+          If "perform" is selected, the evaluator shall verify that the TSS describes the counter mechanism including rationale that the counter values provided are unique.
+          
+          
+          There are no guidance evaluation activities for this component.
+          
+          
+          If "perform" is selected, the evaluator shall perform the following tests:
+          <ul xmlns="">
+            <li>
+<b>Test 1: </b>
+              Known Answer Tests (KATs)
+              <p></p>
+              There are four Known Answer Tests (KATs) described below.  For all KATs, the plaintext,
+              initialization vector (IV), and ciphertext values shall be 128-bit blocks.  The results from each test may
+              either be obtained by the validator directly or by supplying the inputs to the implementer
+              and receiving the results in response.  To determine correctness, the evaluator shall
+              compare the resulting values to those obtained by submitting the same inputs to a known
+              good implementation.
+              <p></p>
+              <b>Test 1a:</b> To test the encrypt functionality, the evaluator shall supply a set of 10 plaintext 
+              values and obtain the ciphertext value that results from encryption of the given plaintext
+              using a key value of all zeros and an IV of all zeros.  Five plaintext values shall be encrypted
+              with a 128-bit all zeros key, and the other five shall be encrypted with a 256-bit all zeros key. 
+              To test the decrypt functionality, the evaluator shall perform the same 
+              test as for encrypt, using 10 ciphertext values as input.
+              <p></p>
+              <b>Test 1b:</b> To test the encrypt functionality, the evaluator shall supply a set of 10 key values
+              and obtain the ciphertext value that results from encryption of an all zeros plaintext
+              using the given key value and an IV of all zeros.  Five of the key values shall be 128-bit
+              keys, and the other five shall be 256-bit keys. To test the decrypt functionality, the
+              evaluator shall perform the same test as for encrypt, using an all zero ciphertext
+              value as input.
+              <p></p>
+              <b>Test 1c:</b> To test the encrypt functionality, the evaluator shall supply the two sets of key values
+              described below and obtain the ciphertext values that result from AES encryption of an
+              all zeros plaintext using the given key values and an IV of all zeros.  The first set of
+              keys shall have 128 128-bit keys, and the second shall have 256 256-bit keys.  Key_i in
+              each set shall have the leftmost i bits be ones and the rightmost N-i bits be zeros,
+              for i in [1, N]. To test the decrypt functionality, the evaluator shall supply the two
+              sets of key and ciphertext value pairs described below and obtain the plaintext value
+              that results from decryption of the given ciphertext using the given key values and an
+              IV of all zeros.  The first set of key/ciphertext pairs shall have 128 128-bit
+              key/ciphertext pairs, and the second set of key/ciphertext pairs shall have 256 256-bit
+              pairs. Key_i in each set shall have the leftmost i bits be ones and the rightmost N-i
+              bits be zeros for i in [1, N].  The ciphertext value in each pair shall be the value 
+              that results in an all zeros plaintext when decrypted with its corresponding key.
+              <p></p>
+              <b>Test 1d:</b> To test the encrypt functionality, the evaluator shall supply the set of
+              128 plaintext values described below and obtain the two ciphertext values that
+              result from encryption of the given plaintext using a 128-bit key value of all
+              zeros and using a 256 bit key value of all zeros, respectively, and an IV of all
+              zeros. Plaintext value i in each set shall have the leftmost bits be ones and
+              the rightmost 128-i bits be zeros, for i in [1, 128].  To test the decrypt functionality,
+              the evaluator shall perform the same test as for encrypt, using ciphertext
+              values of the same form as the plaintext in the encrypt test as input.
+              <p></p>
+            </li>
+            <li>
+<b>Test 2: </b>
+              Multi-Block Message Test
+              <p></p>
+              The evaluator shall test the encrypt functionality by encrypting an i-block 
+              message where 1 less-than i less-than-or-equal to 10. For each i the evaluator 
+              shall choose a key, IV, and plaintext message of length i blocks and encrypt
+              the message, using the mode to be tested, with the chosen key. The ciphertext
+              shall be compared to the result of encrypting the same plaintext message with
+              the same key and IV using a known good implementation. The evaluator shall also 
+              test the decrypt functionality by decrypting an i-block message where 1 less-than
+              i less-than-or-equal to 10. For each i the evaluator shall choose a key and
+              a ciphertext message of length i blocks and decrypt the message, using the mode 
+              to be tested, with the chosen key. The plaintext shall be compared to the result
+              of decrypting the same ciphertext message with the same key using a known good implementation.
+              <p></p>
+            </li>
+            <li>
+<b>Test 3: </b>
+              Monte-Carlo Test
+              <p></p>
+              For AES-CTR mode perform the Monte Carlo Test for ECB Mode on the encryption 
+              engine of the counter mode implementation. There is no need to test the decryption engine.
+              <p></p>
+              The evaluator shall test the encrypt functionality using 200 plaintext/key pairs. 
+              100 of these shall use 128 bit keys, and 100 of these shall use 256 bit keys.  
+              The plaintext values shall be 128-bit blocks.  For each pair, 1000 iterations shall be run as follows:
+              <p></p>
+              For AES-ECB mode<br>
+              # Input: PT, Key<br>
+              for i = 1 to 1000:<br>
+              CT[i] = AES-ECB-Encrypt(Key, PT)<br>
+              PT = CT[i]
+              <p></p>
+              The ciphertext computed in the 1000th iteration is the result for that 
+              trial.  This result shall be compared to the result of running 1000 
+              iterations with the same values using a known good implementation.  
+            </li>
+          </ul>
+            If "invoke platform-provided" is selected, the evaluator confirms that SSH connections are only successful if appropriate algorithms and appropriate key sizes are configured. To do this, the evaluator shall perform the following tests:
+            <ul xmlns="">
+              <li>
+<b>Test 1: </b>
+                [Conditional: TOE is an SSH server] The evaluator shall configure an SSH client to connect with an invalid cryptographic algorithm and key size for each listening SSH socket connection on the TOE.  
+                The evaluator initiates SSH client connections to each listening SSH socket connection on the TOE and observes that the connection fails in each attempt.
+              </li>
+            <li>
+<b>Test 2: </b>
+              [Conditional: TOE is an SSH client] The evaluator shall configure a listening SSH socket on a remote SSH server that accepts only invalid cryptographic algorithms and keys. 
+              The evaluator uses the TOE to attempt an SSH connection to this server and observes that the connection fails.  
+            </li>
+            </ul>
+            
+        </i></div></div>
+      </div></div>
+    </div>
+    <div class="comp" id="FCS_SSH_EXT.1"><h4>FCS_SSH_EXT.1 SSH Protocol</h4>
+	<div class="element"><div class="reqid" id="FCS_SSH_EXT.1.1"><a href="#FCS_SSH_EXT.1.1" class="abbr">FCS_SSH_EXT.1.1</a></div><div class="reqdesc">
+        The SSH software shall implement the SSH protocol that complies with RFCs 4251, 4252, 4253,
+        4254 and 
+        [<b xmlns="">selection</b>: <i xmlns="">5647</i>, <i xmlns="">5656</i>, <i xmlns="">6187</i>, <i xmlns="">6668</i>, <i xmlns="">8332</i>, <i xmlns="">no other RFCs</i>] as a 
+		[<b xmlns="">selection</b>: <i xmlns="">client</i>, <i xmlns="">server</i>].
+		
+        <div xmlns="" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">The ST author selects which of the additional RFCs to which
+        conformance is being claimed. An SSH product can implement additional RFCs, but only those
+        listed in the selection can be claimed as conformant under CC. 
+        The RFC selections for this requirement need to be consistent with selections in
+        later elements of this Functional Package (e.g., cryptographic algorithms permitted). 
+        <p></p>
+        RFC 4253 indicates that certain cryptographic algorithms are "REQUIRED." This means that from the 
+        Internet Engineering Task Force's (IETF's) perspective the implementation must include support, not that the algorithms must 
+        be enabled for use. For the purposes of this SFR's evaluation activity and this Functional Package
+        overall, it is not necessary to ensure that algorithms listed as "REQUIRED" by the RFC 
+        but not listed in later elements of this Functional Package are actually implemented.
+        <p></p>
+         RFC 5647 applies when AEAD_AES_128_GCM or AEAD_AES_256_GCM is selected as an encryption algorithm in FCS_SSHC_EXT.1.3 or FCS_SSHS_EXT.1.3 and as a MAC algorithm in FCS_SSHC_EXT.1.5 or FCS_SSHS_EXT.1.5. 
+          <p></p>
+          RFC 5656 applies when ecdsa-sha2-nistp256 or ecdsa-sha2-nistp384 is selected as a public key algorithm in FCS_SSHC_EXT.1.4 or FCS_SSHS_EXT.1.4, or when ecdh-sha2-nistp256, ecdh-sha2-nistp384, or ecdh-sha2-nistp521 is selected as a key exchange 
+          algorithm in FCS_SSHC_EXT.1.6 or FCS_SSHS_EXT.1.6.
+          <p></p>
+          RFC 6187 applies when x509v3-ecdsa-sha2-nistp256 or x509v3-ecdsa-sha2-nistp384 is selected as a public key algorithm in FCS_SSHC_EXT.1.4 or FCS_SSHS_EXT.1.4.
+          <p></p>
+          RFC 6668 applies when hmac-sha2-256 or hmac-sha2-512 is selected as a MAC algorithm in FCS_SSHC_EXT.1.5 or FCS_SSHS_EXT.1.5.
+          <p></p>
+          RFC 8332 applies when rsa-sha2-256 or rsa-sha2-512 is selected as a public key algorithm in FCS_SSHC_EXT.1.4 or FCS_SSHS_EXT.1.4.
+          <p></p>
+        If "client" is selected, then the ST must include the requirements from <a xmlns="http://www.w3.org/1999/xhtml" class="linkref" href="#FCS_SSHC_EXT.1">FCS_SSHC_EXT.1</a>.
+        <p></p>
+        If "server" is selected, then the ST must include the requirements from <a xmlns="http://www.w3.org/1999/xhtml" class="linkref" href="#FCS_SSHS_EXT.1">FCS_SSHS_EXT.1</a>.
+	</span>
+</div>
+        <div class="activity_pane hide"><div class="activity_pane_header"><a onclick="toggle(this);return false;" href="#"><span class="activity_pane_label"> Evaluation Activity </span><span class="toggler"></span></a></div><div class="activity_pane_body"><i>
+          The evaluator shall ensure that the selections indicated in the ST are 
+	consistent with selections in the dependent components.
+          
+          
+            There are no guidance evaluation activities for this component.
+          
+          
+            There are no test evaluation activities for this component.
+          
+        </i></div></div>
+      </div></div>
+      </div>
+
+      
+
+    
+  <h1 id="optional" class="indexable" data-level="1" data-level-alpha="true">
+         Appendix
+         <span class="num"></span>   Optional Requirements</h1>
+    There are currently no Optional Requirements in this Package.
+  <h1 id="sel-based" class="indexable" data-level="1" data-level-alpha="true">
+         Appendix
+         <span class="num"></span>   Selection-Based Requirements</h1>As indicated in the introduction to this Package, 
+    this appendix lists requirements that are activated based on selections made in the PP, PP-Module, or ST, or in other portions of this Package itself.
+<div class="comp" id="FCS_SSHC_EXT.1"><h4>FCS_SSHC_EXT.1 SSH Protocol - Client</h4><div class="statustag"><b><i>This selection-based component depends upon selection in
+              <b><i><a class="" href="#FCS_SSH_EXT.1.1">FCS_SSH_EXT.1.1</a></i></b>. </i></b></div>
+      
+        
+      <div class="element"><div class="reqid" id="FCS_SSHC_EXT.1.1"><a href="#FCS_SSHC_EXT.1.1" class="abbr">FCS_SSHC_EXT.1.1</a></div><div class="reqdesc">
+        The SSH client shall ensure that the SSH protocol implementation supports the following
+        authentication methods as described in RFC 4252: public key-based and
+          [<b xmlns="">selection</b>: <i xmlns="">password-based</i>, <i xmlns="">no other method</i>].
+        
+        <div class="activity_pane hide"><div class="activity_pane_header"><a onclick="toggle(this);return false;" href="#"><span class="activity_pane_label"> Evaluation Activity </span><span class="toggler"></span></a></div><div class="activity_pane_body"><i>
+        
+        The evaluator shall check to ensure that the TSS contains a description of the
+        public key algorithms that are acceptable for use for authentication and that this list
+        conforms to 
+          <a class="linkref" href="#FCS_SSHC_EXT.1.4">FCS_SSHC_EXT.1.4</a>. The evaluator shall also ensure that password-based authentication
+          methods are described, if supported.
+        
+          
+            If the SSH client supports password-based authentication, the evaluator shall examine the guidance to determine that it includes instructions on how to configure whether the TSF uses password-based or public key-based authentication.
+          
+          
+        <ul xmlns="">
+          <li>
+<b>Test 1: </b>The evaluator shall, for each public key algorithm supported, show that the TOE
+          supports the use of that public key algorithm to authenticate a user connection to an SSH
+          server. Any configuration activities required to support this test shall be performed
+          according to instructions in the guidance documentation.</li>
+          <li>
+<b>Test 2: </b>[Conditional: TOE supports password-based authentication] Using the guidance documentation, the evaluator shall configure the TOE to perform
+          password-based authentication to an SSH server, and demonstrate that a user can be
+          successfully authenticated by the TOE to an SSH server using a password as an
+          authenticator.</li>
+        </ul>
+          
+        </i></div></div>
+      </div></div>
+      <div class="element"><div class="reqid" id="FCS_SSHC_EXT.1.2"><a href="#FCS_SSHC_EXT.1.2" class="abbr">FCS_SSHC_EXT.1.2</a></div><div class="reqdesc">
+        The SSH client shall ensure that, as described in RFC 4253, packets greater than 
+        [<b xmlns="">assignment</b>: <span xmlns="" class="assignable-content">number of bytes</span>] bytes in an SSH transport connection are
+        dropped.
+        <div xmlns="" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">RFC 4253 provides for the acceptance of “large packets” with the
+        caveat that the packets should be of “reasonable length” or dropped. The assignment should
+        be filled in by the ST author with the maximum packet size accepted, thus defining
+        “reasonable length” for the TOE.</span>
+</div>
+        <div class="activity_pane hide"><div class="activity_pane_header"><a onclick="toggle(this);return false;" href="#"><span class="activity_pane_label"> Evaluation Activity </span><span class="toggler"></span></a></div><div class="activity_pane_body"><i>
+          
+            The evaluator shall check that the TSS describes how “large packets” in terms of RFC 4253 are detected and handled.
+          
+          
+            There are no guidance evaluation activities for this element.
+          
+          
+            <ul xmlns="">
+              The evaluator shall perform the following test:
+              <li>
+<b>Test 1: </b>
+                The evaluator shall demonstrate that if the TOE receives a packet larger than that
+                specified in this element, the packet is dropped.
+              </li>
+            </ul>
+          
+        </i></div></div>
+      </div></div>
+      <div class="element"><div class="reqid" id="FCS_SSHC_EXT.1.3"><a href="#FCS_SSHC_EXT.1.3" class="abbr">FCS_SSHC_EXT.1.3</a></div><div class="reqdesc">
+        The SSH client shall ensure that the SSH transport implementation uses the following
+        encryption algorithms and rejects all other encryption algorithms: aes128-ctr, aes256-ctr, 
+        [<b xmlns="">selection</b>: <i xmlns="">aes128-cbc</i>, <i xmlns="">aes256-cbc</i>, <i xmlns="">AEAD_AES_128_GCM</i>, <i xmlns="">AEAD_AES_256_GCM</i>, <i xmlns="">no other algorithms</i>].
+        
+        <div xmlns="" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">RFC 5647 specifies the use of the AEAD_AES_128_GCM and
+        AEAD_AES_256_GCM algorithms in SSH. As described in RFC 5647, AEAD_AES_128_GCM and
+        AEAD_AES_256_GCM can only be chosen as encryption algorithms when the same algorithm is
+        being used as the MAC algorithm.
+        If AES-GCM is selected,
+        there should be corresponding FCS_COP entries in the ST.</span>
+</div>
+        <div class="activity_pane hide"><div class="activity_pane_header"><a onclick="toggle(this);return false;" href="#"><span class="activity_pane_label"> Evaluation Activity </span><span class="toggler"></span></a></div><div class="activity_pane_body"><i>
+          
+          The evaluator shall check the description of the implementation of this protocol
+        in the TSS to ensure that it specifies the supported encryption algorithms and any optional characteristics. 
+        The evaluator shall also check the TSS to ensure that
+        the encryption algorithms specified are identical to those listed for this element. 
+          
+        The evaluator shall check the guidance documentation to ensure that it contains
+        instructions on configuring the TOE so that SSH conforms to the description in the TSS (for
+        instance, the set of algorithms advertised by the TOE may have to be restricted to meet the
+        requirements). 
+        
+          
+            The evaluator shall perform the following tests:
+        <ul xmlns="">
+          <li>
+<b>Test 1: </b>The evaluator shall establish an SSH connection using each of the encryption
+          algorithms specified by the requirement. It is sufficient to observe (on the wire) the
+          successful negotiation of the algorithm to satisfy the intent of this test.</li>
+          <li>
+<b>Test 2: </b>The evaluator shall configure an SSH server to only allow the 3des-cbc encryption
+          algorithm and no other encryption algorithms. The evaluator shall attempt to establish an
+          SSH connection from the TOE to the SSH server and observe that the connection is
+          rejected.</li>
+        </ul>
+          
+        </i></div></div>
+      </div></div>
+        
+        
+      <div class="element"><div class="reqid" id="FCS_SSHC_EXT.1.4"><a href="#FCS_SSHC_EXT.1.4" class="abbr">FCS_SSHC_EXT.1.4</a></div><div class="reqdesc">
+        The SSH client shall ensure that the SSH transport implementation uses 
+        [<b xmlns="">selection</b>: <i xmlns="">ssh-rsa</i>, <i xmlns="">rsa-sha2-256</i>, <i xmlns="">rsa-sha2-512</i>, <i xmlns="">ecdsa-sha2-nistp256</i>] and 
+        [<b xmlns="">selection</b>: <i xmlns="">ecdsa-sha2-nistp384</i>, <i xmlns="">x509v3-ecdsa-sha2-nistp256</i>, <i xmlns="">x509v3-ecdsa-sha2-nistp384</i>, <i xmlns="">no other public key algorithms</i>] as its public key algorithm(s) and rejects all other public key
+        algorithms.
+        <div xmlns="" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">Implementations that select only ssh-rsa will not achieve the
+        112-bit security strength in the digital signature generation for SSH authentication as is
+        recommended in NIST SP 800-131A. 
+        
+        
+        Future versions of this document may remove ssh-rsa as a
+        selection. 
+        
+        If "x509v3-ecdsa-sha2-nistp256" or "x509v3-ecdsa-sha2-nistp384" are selected, then
+        the list of trusted certification authorities must be selected in 
+        <a xmlns="http://www.w3.org/1999/xhtml" class="linkref" href="#FCS_SSHC_EXT.1.8">FCS_SSHC_EXT.1.8</a>. RFC 8332 specifies the use of rsa-sha2-256 or rsa-sha2-512 in SSH.
+        <p></p>
+        The SFRs for cryptographic key generation and certificate validation are inherited
+        from the PP or PP-Module that includes this Package.
+        </span>
+</div>
+        <div class="activity_pane hide"><div class="activity_pane_header"><a onclick="toggle(this);return false;" href="#"><span class="activity_pane_label"> Evaluation Activity </span><span class="toggler"></span></a></div><div class="activity_pane_body"><i>
+          
+            The evaluator shall check the description of the implementation of this protocol
+            in the TSS to ensure that it specifies the supported public key algorithms and any optional characteristics. 
+            The evaluator shall also check the TSS to ensure that
+            the encryption algorithms specified are identical to those listed for this element. 
+          
+          The evaluator shall check the guidance documentation to ensure that it contains
+        instructions on configuring the TOE so that SSH conforms to the description in the TSS (for
+        instance, the set of algorithms advertised by the TOE may have to be restricted to meet the
+        requirements). 
+          
+          
+            The evaluator shall perform the following tests:
+        <ul xmlns="">
+          <li>
+<b>Test 1: </b>The evaluator shall establish a SSH connection using each of the public key
+          algorithms specified by the requirement to authenticate an SSH server to the TOE. It is
+          sufficient to observe (on the wire) the successful negotiation of the algorithm to
+          satisfy the intent of the test.</li>
+          <li>
+<b>Test 2: </b>The evaluator shall configure an SSH server to only allow the ssh-dsa public key
+          algorithm and no other public key algorithms. The evaluator shall attempt to establish an
+          SSH connection from the TOE to the SSH server and observe that the connection is
+          rejected.</li>
+        </ul>
+          
+        </i></div></div>
+      </div></div>
+      <div class="element"><div class="reqid" id="FCS_SSHC_EXT.1.5"><a href="#FCS_SSHC_EXT.1.5" class="abbr">FCS_SSHC_EXT.1.5</a></div><div class="reqdesc">
+        The SSH client shall ensure that the SSH transport implementation uses 
+        [<b xmlns="">selection</b>: <i xmlns="">hmac-sha1</i>, <i xmlns="">hmac-sha1-96</i>, <i xmlns="">hmac-sha2-256</i>, <i xmlns="">hmac-sha2-512</i>] and 
+        [<b xmlns="">selection</b>: <i xmlns="">AEAD_AES_128_GCM</i>, <i xmlns="">AEAD_AES_256_GCM</i>, <i xmlns="">no other MAC algorithms</i>] as its data integrity MAC algorithm(s) and rejects all other MAC
+        algorithm(s).
+        <div xmlns="" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">RFC 5647 specifies the use of the AEAD_AES_128_GCM and
+        AEAD_AES_256_GCM algorithms in SSH. As described in RFC 5647, AEAD_AES_128_GCM and
+        AEAD_AES_256_GCM can only be chosen as MAC algorithms when the same algorithm is being used
+        as the encryption algorithm. RFC 6668 specifies the use of the sha2 algorithms in
+        SSH.
+        <p></p>
+        The SFRs for cryptographic operations, encryption, and hashing are inherited from  
+        the PP or PP-Module that includes this Package.
+        </span>
+</div>
+        <div class="activity_pane hide"><div class="activity_pane_header"><a onclick="toggle(this);return false;" href="#"><span class="activity_pane_label"> Evaluation Activity </span><span class="toggler"></span></a></div><div class="activity_pane_body"><i>
+          
+          The evaluator shall check the TSS to ensure that it lists the supported data
+        integrity algorithms and that this list corresponds to the list in this element. 
+          
+          The evaluator shall check the guidance documentation to ensure that it includes
+        instructions to the administrator on how to ensure that only the allowed data integrity
+        algorithms are used in SSH connections with the TOE (specifically, that the “none” MAC
+        algorithm is not allowed). 
+          
+          
+            The evaluator shall perform the following tests:
+        <ul xmlns="">
+          <li>
+<b>Test 1: </b>The evaluator shall establish a SSH connection using each of the integrity
+          algorithms specified by the requirement. It is sufficient to observe (on the wire) the
+          successful negotiation of the algorithm to satisfy the intent of this test.</li>
+          <li>
+<b>Test 2: </b>The evaluator shall configure an SSH server to only allow the “none” MAC algorithm.
+          The evaluator shall attempt to connect from the TOE to the SSH server and observe that the
+          attempt fails.</li>
+          <li>
+<b>Test 3: </b>The evaluator shall configure an SSH server to only allow the hmac-md5 MAC
+          algorithm. The evaluator shall attempt to connect from the TOE to the SSH server and
+          observe that the attempt fails.</li>
+        </ul>
+          
+        </i></div></div>
+      </div></div>
+      <div class="element"><div class="reqid" id="FCS_SSHC_EXT.1.6"><a href="#FCS_SSHC_EXT.1.6" class="abbr">FCS_SSHC_EXT.1.6</a></div><div class="reqdesc">
+        The SSH client shall ensure that 
+          [<b xmlns="">selection</b>: <i xmlns="">diffie-hellman-group14-sha1</i>, <i xmlns="">ecdh-sha2-nistp256</i>]
+          and
+          [<b xmlns="">selection</b>: <i xmlns="">ecdh-sha2-nistp384</i>, <i xmlns="">ecdh-sha2-nistp521</i>, <i xmlns="">no other methods</i>]
+        are the only allowed key exchange methods used for the SSH protocol.
+        <div class="activity_pane hide"><div class="activity_pane_header"><a onclick="toggle(this);return false;" href="#"><span class="activity_pane_label"> Evaluation Activity </span><span class="toggler"></span></a></div><div class="activity_pane_body"><i>
+          
+          The evaluator shall check the TSS to ensure that it lists the supported key
+        exchange algorithms and that this list corresponds to the list in this element. 
+          
+          
+          The evaluator shall check the guidance documentation to ensure that it includes
+        instructions to the administrator on how to ensure that only the allowed key exchange
+        algorithms are used in SSH connections with the TOE. 
+          
+          
+            The evaluator shall perform the following test:
+        <ul xmlns="">
+          <li>
+<b>Test 1: </b>The evaluator shall configure an SSH server to permit all allowed key exchange
+          methods. The evaluator shall then attempt to connect from the TOE to the SSH server using each
+          allowed key exchange method and observe that each attempt succeeds.</li>
+        </ul>
+          
+        </i></div></div>
+      </div></div>
+      <div class="element"><div class="reqid" id="FCS_SSHC_EXT.1.7"><a href="#FCS_SSHC_EXT.1.7" class="abbr">FCS_SSHC_EXT.1.7</a></div><div class="reqdesc">
+        The SSH client shall ensure that the SSH connection be rekeyed after 
+          [<b xmlns="">selection</b>: <i xmlns="">no more than 2<sup>28</sup> packets have been transmitted</i>, <i xmlns="">no more than 1 gigabyte of data has been transmitted</i>, <i xmlns="">no more than 1 hour</i>]
+          using that key.
+        <div class="activity_pane hide"><div class="activity_pane_header"><a onclick="toggle(this);return false;" href="#"><span class="activity_pane_label"> Evaluation Activity </span><span class="toggler"></span></a></div><div class="activity_pane_body"><i>
+          
+            There are no TSS evaluation activities for this element.
+          
+          
+            There are no guidance evaluation activities for this element.
+          
+          
+            The evaluator shall perform the following test for each rekeying method claimed in the ST:
+          <ul xmlns="">
+            The evaluator shall perform the following test:
+            <li>
+<b>Test 1: </b>The evaluator shall configure the TOE to create a log entry when a rekey occurs. The evaluator shall then use the TOE to connect to an SSH server and cause a rekey to occur according to the selection(s) in the ST.
+            The evaluator shall subsequently use available methods and tools to verify that rekeying occurs. This could be done by, for example, checking that a corresponding audit event has been generated by the TOE or by the SSH server, if
+            either supports auditing of rekey events.
+            </li>
+          </ul>
+          
+        </i></div></div>
+      </div></div>
+      <div class="element"><div class="reqid" id="FCS_SSHC_EXT.1.8"><a href="#FCS_SSHC_EXT.1.8" class="abbr">FCS_SSHC_EXT.1.8</a></div><div class="reqdesc">
+          The SSH client shall ensure that the SSH client authenticates the identity of the SSH server
+            using a local database associating each host name with its corresponding public key or 
+            [<b xmlns="">selection</b>: <i xmlns="">a list of trusted certification authorities</i>, <i xmlns="">no other methods</i>] as described in RFC 4251 section 4.1.
+          <div xmlns="" class="appnote">
+<span class="note-header">Application Note: </span><span class="note"> The selection for "a list of trusted certification authorities" can only be chosen
+            if "x509v3-ecdsa-sha2-nistp256" or "x509v3-ecdsa-sha2-nistp384" are selected in 
+            <a xmlns="http://www.w3.org/1999/xhtml" class="linkref" href="#FCS_SSHC_EXT.1.4">FCS_SSHC_EXT.1.4</a>.</span>
+</div>
+          <div class="activity_pane hide"><div class="activity_pane_header"><a onclick="toggle(this);return false;" href="#"><span class="activity_pane_label"> Evaluation Activity </span><span class="toggler"></span></a></div><div class="activity_pane_body"><i>
+            
+              There are no TSS evaluation activities for this element.
+            
+            
+              There are no guidance evaluation activities for this element.
+            
+            
+              The evaluator shall perform the following tests: 
+            <ul xmlns="">
+              <li>
+<b>Test 1: </b>The evaluator shall delete all entries in the TOE’s list of recognized SSH server
+                host keys and, if selected, all entries in the TOE’s list of trusted certification
+                authorities. The evaluator shall then initiate a connection from the TOE to an SSH server.
+                The evaluator shall ensure that the TOE either rejects the connection or displays the
+                SSH server’s public key (either the key bytes themselves or a hash of the key using any
+                allowed hash algorithm) and prompts the user to accept or deny the key before
+                continuing the connection.</li>
+              <li>
+<b>Test 2: </b>The evaluator shall add an entry associating a host name with a public key into
+                the TOE’s local database. The evaluator shall then replace, on the corresponding SSH server,
+                the server’s host key with a different host key. The evaluator shall initiate a
+                connection from the TOE to the SSH server using password-based authentication, shall
+                ensure that the TOE rejects the connection, and shall ensure that the password was not
+                transmitted to the SSH server (for example, by instrumenting the SSH server with a
+                debugging capability to output received passwords).</li>
+            </ul>
+              
+          </i></div></div>
+       </div></div>
+      </div><div class="comp" id="FCS_SSHS_EXT.1"><h4>FCS_SSHS_EXT.1 SSH Protocol - Server</h4><div class="statustag"><b><i>This selection-based component depends upon selection in
+              <b><i><a class="" href="#FCS_SSH_EXT.1.1">FCS_SSH_EXT.1.1</a></i></b>. </i></b></div>
+      
+      
+      <div class="element"><div class="reqid" id="FCS_SSHS_EXT.1.1"><a href="#FCS_SSHS_EXT.1.1" class="abbr">FCS_SSHS_EXT.1.1</a></div><div class="reqdesc"> 
+        The SSH server shall ensure that the SSH protocol implementation supports the following
+        authentication methods as described in RFC 4252: public key-based and
+          [<b xmlns="">selection</b>: <i xmlns="">password-based</i>, <i xmlns="">no other method</i>].
+        
+        <div class="activity_pane hide"><div class="activity_pane_header"><a onclick="toggle(this);return false;" href="#"><span class="activity_pane_label"> Evaluation Activity </span><span class="toggler"></span></a></div><div class="activity_pane_body"><i>
+          
+          The evaluator shall check to ensure that the TSS contains a description of the
+        public key algorithms that are acceptable for use for authentication and that this list
+        conforms to 
+        <a class="linkref" href="#FCS_SSHS_EXT.1.4">FCS_SSHS_EXT.1.4</a>. The evaluator shall also ensure that password-based authentication
+        methods are described, if supported.
+          
+          
+            If the SSH server supports password-based authentication, the evaluator shall examine the guidance to determine that it includes instructions on how to configure whether the TSF uses password-based or public key-based authentication.
+          
+          
+            The evaluator shall perform the following tests:
+        <ul xmlns="">
+          <li>
+<b>Test 1: </b>The evaluator shall, for each public key algorithm supported, show that the TOE
+          supports the use of that public key algorithm to authenticate a user connection from an
+          SSH client. Any configuration activities required to support this test shall be performed
+          according to instructions in the guidance documentation.</li>
+          <li>
+<b>Test 2: </b>
+          The evaluator shall choose one public key algorithm supported by the
+          TOE. The evaluator shall generate a new key pair for that algorithm without
+          configuring the TOE to recognize the public key for authentication. The
+          evaluator shall use an SSH client to attempt to connect to the TOE with the
+          new key pair and demonstrate that authentication fails.
+          </li>
+          <li>
+<b>Test 3: </b>[Conditional: TOE supports password-based authentication] Using the guidance documentation, the evaluator shall configure the TOE to perform
+          password-based authentication on a client and demonstrate that a user can be
+          successfully authenticated by the TOE using a password as an authenticator.</li>
+          <li>
+<b>Test 4: </b>
+            [Conditional: TOE supports password-based authentication] The evaluator shall use an SSH client to enter an incorrect password to
+            attempt to authenticate to the TOE and demonstrate that the authentication
+            fails.
+          </li>
+        </ul>
+          
+        </i></div></div>
+      </div></div>
+      <div class="element"><div class="reqid" id="FCS_SSHS_EXT.1.2"><a href="#FCS_SSHS_EXT.1.2" class="abbr">FCS_SSHS_EXT.1.2</a></div><div class="reqdesc">
+        The SSH server shall ensure that, as described in RFC 4253, packets greater than 
+        [<b xmlns="">assignment</b>: <span xmlns="" class="assignable-content">number of bytes</span>] bytes in an SSH transport connection are
+        dropped.
+        <div xmlns="" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">RFC 4253 provides for the acceptance of “large packets” with the
+        caveat that the packets should be of “reasonable length” or dropped. The assignment should
+        be filled in by the ST author with the maximum packet size accepted, thus defining
+        “reasonable length” for the TOE.</span>
+</div>
+        <div class="activity_pane hide"><div class="activity_pane_header"><a onclick="toggle(this);return false;" href="#"><span class="activity_pane_label"> Evaluation Activity </span><span class="toggler"></span></a></div><div class="activity_pane_body"><i>
+          The evaluator shall check that the TSS describes how “large packets” in terms of
+        RFC 4253 are detected and handled.
+          
+          
+            There are no guidance evaluation activities for this element.
+          
+          
+        <ul xmlns="">
+          The evaluator shall perform the following test:
+          <li>
+<b>Test 1: </b>
+        The evaluator shall demonstrate that if the TOE receives a packet larger than that
+        specified in this element, the packet is dropped.
+          </li>
+        </ul>
+          
+        </i></div></div>
+      </div></div>
+      <div class="element"><div class="reqid" id="FCS_SSHS_EXT.1.3"><a href="#FCS_SSHS_EXT.1.3" class="abbr">FCS_SSHS_EXT.1.3</a></div><div class="reqdesc">
+        The SSH server shall ensure that the SSH transport implementation uses the following
+          encryption algorithms and rejects all other encryption algorithms: aes128-ctr, 
+          aes256-ctr, [<b xmlns="">selection</b>: <i xmlns="">aes128-cbc</i>, <i xmlns="">aes256-cbc</i>, <i xmlns="">AEAD_AES_128_GCM</i>, <i xmlns="">AEAD_AES_256_GCM</i>, <i xmlns="">no other algorithms</i>].
+        
+        <div xmlns="" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">
+          RFC 5647 specifies the use of the AEAD_AES_128_GCM and AEAD_AES_256_GCM
+          algorithms in SSH. As described in RFC 5647, AEAD_AES_128_GCM and
+          AEAD_AES_256_GCM can only be chosen as encryption algorithms when the same
+          algorithm is being used as the MAC algorithm.
+        </span>
+</div>
+        <div class="activity_pane hide"><div class="activity_pane_header"><a onclick="toggle(this);return false;" href="#"><span class="activity_pane_label"> Evaluation Activity </span><span class="toggler"></span></a></div><div class="activity_pane_body"><i>
+          
+ The evaluator shall check the description of the implementation of this protocol
+        in the TSS to ensure that it specifies the supported encryption algorithms and any optional characteristics. 
+        The evaluator shall also check the TSS to ensure that
+        the encryption algorithms specified are identical to those listed for this element.
+          
+          
+            The evaluator shall check the guidance documentation to ensure that it contains
+            instructions on configuring the TOE so that SSH conforms to the description in the TSS (for
+            instance, the set of algorithms advertised by the TOE may have to be restricted to meet the
+            requirements). 
+          
+        
+          The evaluator shall perform the following tests:
+        <ul xmlns="">
+          <li>
+<b>Test 1: </b>The evaluator shall initiate an SSH connection using each of the encryption
+          algorithms specified by the requirement. It is sufficient to observe (on the wire) the
+          successful negotiation of the algorithm to satisfy the intent of this test.</li>
+          <li>
+<b>Test 2: </b>The evaluator shall configure an SSH client to only propose the 3des-cbc encryption
+          algorithm and no other encryption algorithms. The evaluator shall attempt to establish an
+          SSH connection from this client to the TOE server and observe that the connection is
+          rejected.</li>
+        </ul>
+        
+        </i></div></div>
+      </div></div>
+      <div class="element"><div class="reqid" id="FCS_SSHS_EXT.1.4"><a href="#FCS_SSHS_EXT.1.4" class="abbr">FCS_SSHS_EXT.1.4</a></div><div class="reqdesc">
+        The SSH server shall ensure that the SSH transport implementation uses 
+          [<b xmlns="">selection</b>: <i xmlns="">ssh-rsa</i>, <i xmlns="">rsa-sha2-256</i>, <i xmlns="">rsa-sha2-512</i>, <i xmlns="">ecdsa-sha2-nistp256</i>]
+           and 
+          [<b xmlns="">selection</b>: <i xmlns="">ecdsa-sha2-nistp384</i>, <i xmlns="">x509v3-ecdsa-sha2-nistp256</i>, <i xmlns="">x509v3-ecdsa-sha2-nistp384</i>, <i xmlns="">no other public key algorithms</i>]
+        as its public key algorithm(s) and
+        rejects all other public key algorithms.
+        
+        <div xmlns="" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">
+          Implementations that select only ssh-rsa will not achieve the 112-bit security strength in the
+          digital signature generation for SSH authentication as is recommended in NIST SP 800-131A. 
+          
+          
+          Future versions of this document may remove ssh-rsa as a
+          selection.  
+          
+          RFC 8332 specifies the use of rsa-sha2-256 or rsa-sha2-512 in SSH.
+          <p></p>
+          The SFRs for cryptographic key generation and certificate validation are inherited
+          from the PP or PP-Module that includes this Package.
+        </span>
+</div>
+        <div class="activity_pane hide"><div class="activity_pane_header"><a onclick="toggle(this);return false;" href="#"><span class="activity_pane_label"> Evaluation Activity </span><span class="toggler"></span></a></div><div class="activity_pane_body"><i>
+          
+            The evaluator shall check the description of the implementation of this protocol
+            in the TSS to ensure that it specifies the supported public key algorithms and any optional characteristics. 
+            The evaluator shall also check the TSS to ensure that
+            the encryption algorithms specified are identical to those listed for this element. 
+          
+          The evaluator shall check the guidance documentation to ensure that it contains
+            instructions on configuring the TOE so that SSH conforms to the description in the TSS (for
+            instance, the set of algorithms advertised by the TOE may have to be restricted to meet the
+            requirements). 
+          
+          
+            The evaluator shall perform the following tests:
+        <ul xmlns="">
+          <li>
+<b>Test 1: </b>Using an appropriately configured client, the evaluator shall establish an SSH
+          connection using each of the public key algorithms specified by the requirement to
+          authenticate to the TOE. It is sufficient to observe (on the wire) the successful negotiation of the
+          algorithm to satisfy the intent of this test.</li>
+          <li>
+<b>Test 2: </b>The evaluator shall configure an SSH client to propose only the ssh-dsa public key
+          algorithm and no other public key algorithms. Using this client, the evaluator shall
+          attempt to establish an SSH connection to the TOE and observe that the connection is
+          rejected.</li>
+        </ul>
+          
+        </i></div></div>
+      </div></div>
+      <div class="element"><div class="reqid" id="FCS_SSHS_EXT.1.5"><a href="#FCS_SSHS_EXT.1.5" class="abbr">FCS_SSHS_EXT.1.5</a></div><div class="reqdesc">
+        The SSH server shall ensure that the SSH transport implementation uses 
+        [<b xmlns="">selection</b>: <i xmlns="">hmac-sha1</i>, <i xmlns="">hmac-sha1-96</i>, <i xmlns="">hmac-sha2-256</i>, <i xmlns="">hmac-sha2-512</i>]
+          and
+        [<b xmlns="">selection</b>: <i xmlns="">AEAD_AES_128_GCM</i>, <i xmlns="">AEAD_AES_256_GCM</i>, <i xmlns="">no other MAC algorithms</i>]
+        as its MAC algorithm(s) and rejects all
+        other MAC algorithm(s).
+        <div xmlns="" class="appnote">
+<span class="note-header">Application Note: </span><span class="note">
+          RFC 5647 specifies the use of the AEAD_AES_128_GCM and AEAD_AES_256_GCM
+          algorithms in SSH. As described in RFC 5647, AEAD_AES_128_GCM and
+          AEAD_AES_256_GCM can only be chosen as MAC algorithms when the same algorithm is
+          being used as the encryption algorithm. RFC 6668 specifies the use of the sha2 algorithms
+          in SSH.
+          <p></p>
+          The SFRs for cryptographic operations, encryption and hashing, are inherited from the PP or PP-Module that includes this Package.
+        </span>
+</div>
+        <div class="activity_pane hide"><div class="activity_pane_header"><a onclick="toggle(this);return false;" href="#"><span class="activity_pane_label"> Evaluation Activity </span><span class="toggler"></span></a></div><div class="activity_pane_body"><i>
+          
+          The evaluator shall check the TSS to ensure that it lists the supported data
+        integrity algorithms and that this list corresponds to the list in this element. 
+          
+          The evaluator shall check the guidance documentation to ensure that it includes
+        instructions to the administrator on how to ensure that only the allowed data integrity
+        algorithms are used in SSH connections with the TOE (specifically, that the “none” and "hmac-md5" MAC
+        algorithms are not allowed). 
+          
+          
+            The evaluator shall perform the following tests:
+        <ul xmlns="">
+          <li>
+<b>Test 1: </b>Using an appropriately configured client, the evaluator shall establish a SSH
+          connection with the TOE using each of the integrity algorithms specified by the requirement. It is
+          sufficient to observe (on the wire) the successful negotiation of the algorithm to
+          satisfy the intent of the test.</li>
+          <li>
+<b>Test 2: </b>The evaluator shall configure an SSH client to only propose the “none” MAC
+          algorithm. Using this client, the evaluator shall attempt to connect to the TOE and
+          observe that the attempt fails.</li>
+          <li>
+<b>Test 3: </b>The evaluator shall configure an SSH client to only propose the hmac-md5 MAC
+          algorithm. Using this client, the evaluator shall attempt to connect to the TOE and
+          observe that the attempt fails.</li>
+        </ul>
+          
+        </i></div></div>
+      </div></div>
+      <div class="element"><div class="reqid" id="FCS_SSHS_EXT.1.6"><a href="#FCS_SSHS_EXT.1.6" class="abbr">FCS_SSHS_EXT.1.6</a></div><div class="reqdesc">
+        The SSH server shall ensure that 
+        [<b xmlns="">selection</b>: <i xmlns="">diffie-hellman-group14-sha1</i>, <i xmlns="">ecdh-sha2-nistp256</i>]
+          and
+        [<b xmlns="">selection</b>: <i xmlns="">ecdh-sha2-nistp384</i>, <i xmlns="">ecdh-sha2-nistp521</i>, <i xmlns="">no other methods</i>]
+        are the only allowed key exchange
+        methods used for the SSH protocol.
+        <div class="activity_pane hide"><div class="activity_pane_header"><a onclick="toggle(this);return false;" href="#"><span class="activity_pane_label"> Evaluation Activity </span><span class="toggler"></span></a></div><div class="activity_pane_body"><i>
+          The evaluator shall check the TSS to ensure that it lists the supported key
+        exchange algorithms and that this list corresponds to the list in this element.
+          
+        
+          The evaluator shall check the guidance documentation to ensure that it includes
+        instructions to the administrator on how to ensure that only the allowed key exchange
+        algorithms are used in SSH connections to the TOE. 
+        
+          
+            The evaluator shall perform the following tests:
+        <ul xmlns="">
+          <li>
+<b>Test 1: </b>For each of the allowed key exchange methods, the evaluator shall configure an SSH
+          client to propose only that method and then attempt to connect to the TOE. The evaluator shall confirm that each attempt
+          succeeds.</li>
+          <li>
+<b>Test 2: </b>The evaluator shall configure an SSH client to only allow the diffie-hellman-group1-sha1
+            key exchange. The evaluator shall attempt to use this SSH client to connect to the TOE and confirm that this attempt fails.
+            </li>
+        </ul>
+          
+        </i></div></div>
+      </div></div>
+      <div class="element"><div class="reqid" id="FCS_SSHS_EXT.1.7"><a href="#FCS_SSHS_EXT.1.7" class="abbr">FCS_SSHS_EXT.1.7</a></div><div class="reqdesc">
+        The SSH server shall ensure that the SSH connection be rekeyed after 
+          [<b xmlns="">selection</b>: <i xmlns="">no more than 2<sup>28</sup> packets have been transmitted</i>, <i xmlns="">no more than 1 gigabyte of data has been transmitted</i>, <i xmlns="">no more than 1 hour</i>]
+         using that key.
+        <div class="activity_pane hide"><div class="activity_pane_header"><a onclick="toggle(this);return false;" href="#"><span class="activity_pane_label"> Evaluation Activity </span><span class="toggler"></span></a></div><div class="activity_pane_body"><i>
+          
+            There are no TSS evaluation activities for this element.
+          
+          
+            If the TOE has the ability to generate a log when an SSH rekey occurs, the evaluator shall examine the operational guidance to verify that it describes any configuration that is needed for this to be performed.
+          
+          
+            The evaluator shall perform the following test for each rekeying method claimed in the ST:
+          <ul xmlns="">
+            <li>
+<b>Test 1: </b>The evaluator shall configure the TOE to create a log entry when a rekey occurs. The evaluator shall then connect to the TOE using an SSH client and cause a rekey to occur according to the selection(s) in the ST.
+              The evaluator shall subsequently use available methods and tools to verify that rekeying occurs. This could be done by, for example, checking that a corresponding audit event has been generated by the TOE or by the SSH client, if
+              either supports auditing of rekey events.</li>
+          </ul>
+          
+        </i></div></div>
+      </div></div>
+    </div><h1 id="objective" class="indexable" data-level="1" data-level-alpha="true">
+         Appendix
+         <span class="num"></span>   Objective Requirements</h1>This appendix includes requirements that
+    specify security functionality which also addresses threats. The requirements are not currently
+    mandated in the body of this Package as they describe security functionality not yet widely-available
+    in commercial technology. However, these requirements may be included in the ST such that the
+    product is still conformant to this Package, and it is expected that they be included as soon as
+    possible. <h1 id="biblio" class="indexable" data-level="1" data-level-alpha="true">
+         Appendix
+         <span class="num"></span>   References</h1>
+    <table><tr class="header"><th>Identifier</th><th>Title</th></tr><tr><td><span id="bibCC"> [CC] </span></td><td>Common Criteria for Information Technology Security Evaluation - <ul xmlns="">
+          <li>
+<a href="http://www.commoncriteriaportal.org/files/ccfiles/CCPART1V3.1R5.pdf">Part
+            1: Introduction and General Model</a>, CCMB-2012-09-001, Version 3.1 Revision 5,
+            April 2017.</li>
+          <li>
+<a href="http://www.commoncriteriaportal.org/files/ccfiles/CCPART2V3.1R5.pdf">Part
+            2: Security Functional Components</a>, CCMB-2012-09-002, Version 3.1 Revision 5,
+            April 2017.</li>
+          <li>
+<a href="http://www.commoncriteriaportal.org/files/ccfiles/CCPART3V3.1R5.pdf">Part
+            3: Security Assurance Components</a>, CCMB-2012-09-003, Version 3.1 Revision 5,
+            April 2017.</li>
+        </ul></td></tr><tr><td><span id="bibGPOS"> [GPOSPP] </span></td><td>
+          <a xmlns="" href="https://www.niap-ccevs.org/Profile/Info.cfm?id=442">Protection Profile for General 
+            Purpose Operating Systems
+            </a>
+        </td></tr><tr><td><span id="bibMDM"> [MDMPP] </span></td><td>
+          <a xmlns="" href="https://www.niap-ccevs.org/Profile/Info.cfm?id=428">Protection Profile for Mobile 
+            Device Management
+          </a>
+        </td></tr><tr><td><span id="bibAppPP"> [AppPP] </span></td><td>
+          <a xmlns="" href="https://www.niap-ccevs.org/Profile/Info.cfm?id=429">Protection Profile for Application
+            Software</a>
+        </td></tr><tr><td><span id="bibVirt"> [VirtPP] </span></td><td>
+          <a xmlns="" href="https://www.niap-ccevs.org/Profile/Info.cfm?id=408">Protection Profile for 
+            Virtualization</a>
+        </td></tr></table>
+  <h1 id="acronyms" class="indexable" data-level="1" data-level-alpha="true">
+         Appendix
+         <span class="num"></span>   Acronyms</h1>
+    <table><tr class="header"><th>Acronym</th><th>Meaning</th></tr><tr><td>AES</td><td>Advanced Encryption Standard</td></tr><tr><td>CBC</td><td>Cipher Block Chaining</td></tr><tr><td>CC</td><td>Common Criteria</td></tr><tr><td>CTR</td><td>Counter (AES mode)</td></tr><tr><td>ECB</td><td>Electronic Codebook</td></tr><tr><td>ECDSA</td><td>Elliptic Curve Digital Signature Algorithm</td></tr><tr><td>GCM</td><td>Galois/Counter Mode</td></tr><tr><td>IETF</td><td>Internet Engineering Task Force</td></tr><tr><td>IV</td><td>Initialization Vector</td></tr><tr><td>MAC</td><td>Message Authentication Code</td></tr><tr><td>NIST</td><td>National Institute of Standards and Technology</td></tr><tr><td>PP</td><td>Protection Profile</td></tr><tr><td>RFC</td><td>Request for Comment (IETF)</td></tr><tr><td>RSA</td><td>Rivest Shamir Adelman</td></tr><tr><td>SAR</td><td>Security Assurance Requirement</td></tr><tr><td>SFR</td><td>Security Functional Requirement</td></tr><tr><td>SSH</td><td>Secure Shell</td></tr><tr><td>ST</td><td>Security Target</td></tr><tr><td>TOE</td><td>Target of Evaluation</td></tr><tr><td>TSF</td><td>TOE Security Functionality</td></tr><tr><td>TSS</td><td>TOE Summary Specification</td></tr></table>
+  </body></html>
